@@ -1,0 +1,132 @@
+{
+  "mode": "frames",
+  "video": "data/genai_oracle/minimax_h3",
+  "frames": {
+    "160": "data/genai_oracle/minimax_h3/frame_000160.png",
+    "161": "data/genai_oracle/minimax_h3/frame_000161.png",
+    "192": "data/genai_oracle/minimax_h3/frame_000192.png",
+    "320": "data/genai_oracle/minimax_h3/frame_000320.png"
+  },
+  "interval": [
+    160,
+    320
+  ],
+  "offset": 0,
+  "output_resolution": {
+    "160": [
+      1280,
+      720
+    ],
+    "161": [
+      1280,
+      720
+    ],
+    "192": [
+      1280,
+      720
+    ],
+    "320": [
+      1280,
+      720
+    ]
+  },
+  "original_resolution": [
+    1280,
+    720
+  ],
+  "resized": false,
+  "resized_frames": [],
+  "frames_with_corners": [
+    160,
+    192,
+    320
+  ],
+  "frames_with_masks": [
+    192
+  ],
+  "missing_frames": [],
+  "placement": {
+    "n": 3,
+    "median": 0.02673917677517171,
+    "p90": 0.37844923523154816,
+    "success": 0.3333333333333333,
+    "failed": 0,
+    "detection_rate": 1.0,
+    "per_frame": {
+      "160": 0.012223478182880883,
+      "192": 0.02673917677517171,
+      "320": 0.46637674984564226
+    }
+  },
+  "fidelity": {
+    "ncc": 0.3169931679985361,
+    "ssim": 0.37907352517353265,
+    "mae": 0.25693229337533313,
+    "structure": 0.14365084652687765
+  },
+  "preservation": {
+    "psnr_outside": 20.03789135645803,
+    "ssim_outside": 0.7430746809081081,
+    "mad_outside": 0.07426685219009717,
+    "background_drift_px": 264.8912178675334
+  },
+  "preservation_per_frame": [
+    {
+      "frame": 160,
+      "psnr_outside": 26.526842655376047,
+      "ssim_outside": 0.8783619054716637,
+      "mad_outside": 0.024588003754615784,
+      "background_drift_px": 6.205445289611816
+    },
+    {
+      "frame": 192,
+      "psnr_outside": 20.16842601603404,
+      "ssim_outside": 0.7525012816205757,
+      "mad_outside": 0.05121408775448799,
+      "background_drift_px": 22.71790313720703
+    },
+    {
+      "frame": 320,
+      "psnr_outside": 13.418405397963998,
+      "ssim_outside": 0.598360855632085,
+      "mad_outside": 0.14699846506118774,
+      "background_drift_px": 765.7503051757812
+    }
+  ],
+  "temporal": {
+    "stride": 1,
+    "flicker": 0.13940219581127167,
+    "warping_error": 0.07583211362361908,
+    "recovered_corner_jitter_px": 13.03714036789051,
+    "pairs": 1,
+    "pair_frames": [
+      [
+        160,
+        161
+      ]
+    ]
+  },
+  "occlusion": {
+    "leakage": 0.0833909273686856,
+    "psnr_foreground": 24.97758459973694,
+    "coverage_visible": 0.9001379452602266,
+    "false_occlusion": NaN,
+    "mask_frames": 1,
+    "empty_mask_frames": 0,
+    "n_coverage_frames": 1,
+    "n_false_occlusion_frames": 0,
+    "overlay_absent_frames": [],
+    "per_frame": [
+      {
+        "frame": 192,
+        "leakage": 0.0833909273686856,
+        "psnr_foreground": 24.97758459973694,
+        "mask_empty": false,
+        "foreground_pixels": 63664,
+        "overlay_absent": false,
+        "coverage_visible": 0.9001379452602266,
+        "false_occlusion": NaN
+      }
+    ]
+  }
+}

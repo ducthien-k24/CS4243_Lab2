@@ -1,0 +1,32 @@
+{
+  "model": "MiniMaxAI/MiniMax-H3, Ref2VA workflow, bf16 (diffusers 0.41 ModularPipeline)",
+  "seed": 1000,
+  "steps": 30,
+  "canvas": [
+    480,
+    864
+  ],
+  "reference_image_short_edge": 768,
+  "interval_source_frames": [
+    160,
+    335
+  ],
+  "source_fps": 30.0,
+  "output_fps": 24.0,
+  "output_frames": 141,
+  "references": [
+    "video",
+    "artwork"
+  ],
+  "prompt": "Replace the advertisement on the board in <Video 1> with the attached artwork <Picture 1>.",
+  "generation_s": 2080.9,
+  "peak_gpu_gib": 11.07,
+  "compute": "one RTX A5000 (24 GB); bf16 weights in host RAM (~140 GB), transformer and VAE streamed with group offloading",
+  "audit_frame_to_output_index": {
+    "160": 0,
+    "161": 1,
+    "192": 26,
+    "320": 128
+  },
+  "marking": "[AI-GENERATION]"
+}
