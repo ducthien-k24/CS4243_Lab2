@@ -38,7 +38,121 @@ def lk_flow(prev_gray: np.ndarray, next_gray: np.ndarray, points: np.ndarray, co
     optional extension.
     """
     # YOUR CODE HERE
-    raise NotImplementedError("YOUR CODE HERE")
+    prev_gray = np.asarray(prev_gray, dtype=np.float32)
+    next_gray = np.asarray(next_gray, dtype=np.float32)
+    points = np.asarray(points, dtype=np.float64)
+
+    if prev_gray.ndim != 2 or next_gray.ndim != 2:
+        raise ValueError("Input images must be grayscale")
+    if prev_gray.shape != next_gray.shape:
+        raise ValueError("Input images must have the same shape")
+    if points.ndim != 2 or points.shape[1] != 2:
+        raise ValueError("Points must have shape (N, 2)")
+
+    height, width = prev_gray.shape
+    n_points = len(points)
+
+    displacements = np.zeros((n_points, 2), dtype=np.float64)
+    eigenvalues = np.zeros((n_points, 2), dtype=np.float64)
+    residuals = np.full(n_points, np.inf, dtype=np.float64)
+    valid = np.zeros(n_points, dtype=bool)
+
+    gx, gy, _, _ = sobel_gradients(prev_gray)
+
+    radius = config.window
+    offset_y, offset_x = np.mgrid[
+        -radius:radius + 1,
+        -radius:radius + 1,
+    ]
+    sample_count = offset_x.size
+
+    def inside_image(xs, ys):
+        return (
+            np.all(np.isfinite(xs))
+            and np.all(np.isfinite(ys))
+            and np.all((xs >= 0) & (xs <= width - 1))
+            and np.all((ys >= 0) & (ys <= height - 1))
+        )
+    for i, (x, y) in enumerate(points):
+        # Coordinates of the template window.
+        xs = x + offset_x
+        ys = y + offset_y
+
+        if not inside_image(xs, ys):
+            continue
+
+        template = bilinear_sample(prev_gray, ys, xs).ravel()
+
+        ix = bilinear_sample(gx, ys, xs).ravel()
+        iy = bilinear_sample(gy, ys, xs).ravel()
+
+        # One row per window pixel: [Ix, Iy].
+        gradients = np.column_stack((ix, iy))
+
+        # Normalised 2 x 2 structure tensor.
+        tensor = (gradients.T @ gradients) / sample_count
+
+        # eigvalsh returns ascending order; the contract needs descending.
+        eig = np.linalg.eigvalsh(tensor)[::-1]
+        eigenvalues[i] = eig
+
+        # Flat regions or an aperture-problem window cannot constrain 2-D flow.
+        if eig[1] < config.min_eigenvalue or eig[1] <= 0:
+            continue
+
+        displacement = np.zeros(2, dtype=np.float64)
+        converged = False
+
+        for _ in range(config.iterations):
+            warped_x = xs + displacement[0]
+            warped_y = ys + displacement[1]
+
+            if not inside_image(warped_x, warped_y):
+                break
+
+            current = bilinear_sample(
+                next_gray, warped_y, warped_x
+            ).ravel()
+
+            error = template - current
+            rhs = (gradients.T @ error) / sample_count
+
+            try:
+                update = np.linalg.solve(tensor, rhs)
+            except np.linalg.LinAlgError:
+                break
+
+            if not np.all(np.isfinite(update)):
+                break
+
+            displacement += update
+
+            if np.linalg.norm(update) < config.convergence:
+                converged = True
+                break
+
+        displacements[i] = displacement
+
+        # Recompute the residual at the final displacement.
+        final_x = xs + displacement[0]
+        final_y = ys + displacement[1]
+
+        if not inside_image(final_x, final_y):
+            continue
+
+        final_window = bilinear_sample(
+            next_gray, final_y, final_x
+        ).ravel()
+
+        residuals[i] = np.mean(np.abs(template - final_window))
+
+        valid[i] = (
+            converged
+            and np.isfinite(residuals[i])
+            and residuals[i] <= config.max_residual
+        )
+
+    return displacements, eigenvalues, residuals, valid
 
 
 @dataclass

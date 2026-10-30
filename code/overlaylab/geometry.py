@@ -29,7 +29,33 @@ def bilinear_sample(image: np.ndarray, y: np.ndarray, x: np.ndarray) -> np.ndarr
     matching shape so that a whole grid can be sampled at once.
     """
     # YOUR CODE HERE
-    raise NotImplementedError("YOUR CODE HERE")
+    height, width = image.shape[:2]
+
+    y = np.clip(np.asarray(y, dtype=np.float64), 0, height - 1)
+    x = np.clip(np.asarray(x, dtype=np.float64), 0, width - 1)
+
+    y0 = np.floor(y).astype(np.intp)
+    x0 = np.floor(x).astype(np.intp)
+
+    y1 = np.minimum(y0 + 1, height - 1)
+    x1 = np.minimum(x0 + 1, width - 1)
+
+    top_left = image[y0,x0]
+    top_right = image[y0, x1]
+    bottom_left = image[y1,x0]
+    bottom_right = image[y1,x1]
+
+    a = x - x0
+    b = y - y0
+
+    if image.ndim == 3:
+        a = a[..., None]
+        b = b[..., None]
+
+    result = (1-a)*(1-b)*top_left + a*(1-b)*top_right + (1-a)*b*bottom_left + a*b*bottom_right
+
+    return result
+
 
 
 def rectangle_to_rectangle(src_size: Tuple[int, int], dst_size: Tuple[int, int]) -> np.ndarray:
