@@ -103,7 +103,87 @@ def track_board(frames: Sequence[np.ndarray], init: TrackInit, config: TrackConf
     (N) and ``valid`` (N bool); frames that were (re)initialised store {}.
     """
     # YOUR CODE HERE
-    raise NotImplementedError("YOUR CODE HERE")
+    if config.variant not in ("independent", "flow_assisted"):
+        raise ValueError(f"unknown variant: {config.variant!r}")
+    if config.propagate not in ("inliers", "corners"):
+        raise ValueError(f"unknown propagate mode: {config.propagate!r}")
+    ref = init.reference
+    loc = init.localisation
+    ref_rect = rect_corners(ref.shape[1], ref.shape[0])
+    nan4 = np.full((4, 2), np.nan)
+    res = TrackResult(homographies=[], corners=[], status=[], stats=[])
+
+    def _median_px(resid, mask):
+        return float(np.median(np.sqrt(resid[mask] / 2.0))) if np.any(mask) else float("nan")
+
+    prev_gray, prev_corners = None, None
+    ref_pts = cur_pts = None          # flow_assisted: điểm trên reference và vị trí hiện tại trong frame
+    since_init = 0                    # số frame kể từ lần (re)init gần nhất
+    need_init = True
+
+    for t, frame in enumerate(frames):
+        gray = to_gray(frame)
+
+        def _initialise():
+            """localise_board từ reference; trả về (H, corners, status, stats)."""
+            nonlocal ref_pts, cur_pts, since_init, need_init
+            H, corners, pairs, inl, diag = localise_board(ref, frame, loc)
+            res.reinit_frames.append(t)
+            ok = bool(diag["status"])
+            if ok and config.variant == "flow_assisted":
+                if config.propagate == "inliers":
+                    ref_pts = diag["keypoints_ref"][pairs[inl, 0]]
+                    cur_pts = diag["keypoints_frame"][pairs[inl, 1]]
+                else:                                   # "corners": chỉ 4 góc
+                    ref_pts, cur_pts = ref_rect.copy(), np.asarray(corners, np.float64)
+                since_init, need_init = 0, False
+            else:
+                need_init = True
+            st = _frame_stats(prev_corners, corners if ok else nan4, prev_gray, gray,
+                              diag["n_inliers"], diag["inlier_ratio"], diag["median_residual"],
+                              float("nan"), diag["n_matches"] if config.variant == "independent" else
+                              (len(cur_pts) if ok else 0), "ok" if ok else "lost", n_matches=diag["n_matches"])
+            return (H if ok else None), (corners if ok else nan4), ("ok" if ok else "lost"), st
+
+        if config.variant == "independent" or need_init:
+            H, corners, status, st = _initialise()
+            res.flow.append({})
+        else:
+            # 1) lan truyền điểm sang frame mới bằng Lucas-Kanade
+            d, eig, resid_f, valid = lk_flow(prev_gray, gray, cur_pts, config.flow)
+            new_pts = cur_pts + d
+            n_valid = int(valid.sum())
+            since_init += 1
+            redo = (n_valid < config.reinit_min_points or
+                    (config.reinit_every > 0 and since_init >= config.reinit_every))
+            if not redo:
+                # 2) RANSAC giữa điểm reference và điểm đã lan truyền (chỉ điểm hợp lệ)
+                H, mask, e, _, ok = ransac_homography(ref_pts[valid], new_pts[valid], loc.ransac)
+                redo = not ok or H is None
+            if redo:
+                # 3) reinit từ reference (ít điểm / đến hạn / RANSAC fail)
+                H, corners, status, st = _initialise()
+                res.flow.append({})
+            else:
+                corners = transfer_points(H, ref_rect)
+                status = "ok"
+                mean_flow = float(np.mean(np.linalg.norm(d[valid], axis=1))) if n_valid else float("nan")
+                st = _frame_stats(prev_corners, corners, prev_gray, gray, int(mask.sum()),
+                                  float(mask.sum() / max(n_valid, 1)), _median_px(e, mask),
+                                  mean_flow, n_valid, status)
+                res.flow.append({"points": cur_pts.copy(), "vectors": d, "eigenvalues": eig,
+                                 "residuals": resid_f, "valid": valid})
+                # chỉ giữ các điểm hợp lệ và là inlier cho frame sau
+                ref_pts = ref_pts[valid][mask]
+                cur_pts = new_pts[valid][mask]
+
+        res.homographies.append(H)
+        res.corners.append(np.asarray(corners, dtype=np.float64))
+        res.status.append(status)
+        res.stats.append(st)
+        prev_gray = gray
+        prev_corners = corners if status == "ok" else None
+    return res
 
 
 def failure_monitor(stats: Sequence[Dict], config: MonitorConfig) -> List[Tuple[str, str]]:
@@ -129,7 +209,46 @@ def failure_monitor(stats: Sequence[Dict], config: MonitorConfig) -> List[Tuple[
     4. otherwise OK with trigger "none"; an OK frame resets the run.
     """
     # YOUR CODE HERE
-    raise NotImplementedError("YOUR CODE HERE")
+    def _fires(value, limit, below=False):
+        """So sánh an toàn: NaN / None không bao giờ kích hoạt."""
+        if value is None:
+            return False
+        v = float(value)
+        if not np.isfinite(v):
+            return False
+        return v < limit if below else v > limit
+
+    out: List[Tuple[str, str]] = []
+    run = 0                                          # số frame "có vấn đề" liên tiếp (luật 1 và 2)
+    rule3 = [("median_residual", config.max_median_residual),
+             ("corner_displacement", config.max_corner_displacement),
+             ("mean_flow", config.max_mean_flow),
+             ("brightness_change", config.max_brightness_change)]
+    for s in stats:
+        # luật 1: không có mô hình -> HIDE
+        if s.get("status") != "ok":
+            run += 1
+            out.append((HIDE, "no_model"))
+            continue
+        # luật 2: thiếu inlier -> REINIT, lặp lại đủ lâu -> HIDE
+        trig = None
+        if _fires(s.get("inlier_count"), config.min_inlier_count, below=True):
+            trig = "inlier_count"
+        elif _fires(s.get("inlier_ratio"), config.min_inlier_ratio, below=True):
+            trig = "inlier_ratio"
+        if trig is not None:
+            run += 1
+            out.append((HIDE if run >= config.hide_after_consecutive else REINIT, trig))
+            continue
+        # luật 3: thống kê đầu tiên vượt ngưỡng -> REINIT
+        trig = next((name for name, lim in rule3 if _fires(s.get(name), lim)), None)
+        if trig is not None:
+            out.append((REINIT, trig))
+            continue
+        # luật 4: OK, reset chuỗi
+        run = 0
+        out.append((OK, "none"))
+    return out
 
 
 __all__ = ["OK", "REINIT", "HIDE", "lk_flow", "TrackInit", "TrackResult", "track_board", "failure_monitor"]
