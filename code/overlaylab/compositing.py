@@ -29,7 +29,45 @@ def hysteresis(strong: np.ndarray, weak: np.ndarray, connectivity: int = 8) -> n
     of reached pixels. Validate shapes and the connectivity value.
     """
     # YOUR CODE HERE
-    raise NotImplementedError("YOUR CODE HERE")
+    strong = np.asarray(strong, dtype=bool)
+    weak = np.asarray(weak, dtype=bool)
+
+    if strong.ndim != 2 or weak.ndim != 2:
+        raise ValueError("Masks must be 2-D")
+    if strong.shape != weak.shape:
+        raise ValueError("Masks must have the same shape")
+    if connectivity not in (4, 8):
+        raise ValueError("Connectivity must be 4 or 8")
+
+    height, width = strong.shape
+    result = strong.copy()
+
+    # Every strong pixel is a starting point.
+    ys, xs = np.nonzero(strong)
+    stack = list(zip(ys, xs))
+
+    offsets = [(-1, 0), (1, 0), (0, -1), (0, 1)]
+    if connectivity == 8:
+        offsets += [(-1, -1), (-1, 1), (1, -1), (1, 1)]
+
+    while stack:
+        y, x = stack.pop()
+
+        for dy, dx in offsets:
+            ny = y + dy
+            nx = x + dx
+
+            if not (0 <= ny < height and 0 <= nx < width):
+                continue
+
+            if weak[ny, nx] and not result[ny, nx]:
+                # Mark before pushing to avoid duplicate visits.
+                result[ny, nx] = True
+                stack.append((ny, nx))
+
+    return result
+
+    
 
 
 def compensated_difference(frame: np.ndarray, warped_reference: np.ndarray, coverage: np.ndarray,
