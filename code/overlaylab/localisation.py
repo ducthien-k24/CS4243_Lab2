@@ -38,7 +38,52 @@ def localise_board(reference: np.ndarray, frame: np.ndarray, config: Localisatio
     is False.
     """
     # YOUR CODE HERE
-    raise NotImplementedError("YOUR CODE HERE")
+    g_ref = to_gray(reference)
+    g_frm = to_gray(frame)
+
+    # 1) keypoint + descriptor cho cả hai ảnh (chỉ giữ keypoint có descriptor)
+    k_ref, _ = detect_corners(g_ref, config.detector)
+    d_ref, keep_ref = describe_keypoints(g_ref, k_ref, config.descriptor)
+    k_ref = k_ref[keep_ref]
+    k_frm, _ = detect_corners(g_frm, config.detector)
+    d_frm, keep_frm = describe_keypoints(g_frm, k_frm, config.descriptor)
+    k_frm = k_frm[keep_frm]
+
+    # 2) ghép cặp bằng ratio test: pairs[:, 0] chỉ vào k_ref, pairs[:, 1] chỉ vào k_frm
+    pairs, _, _ = match_descriptors(d_ref, d_frm, config.matcher)
+    M = len(pairs)
+
+    # 3) RANSAC homography reference -> frame
+    if M >= 4:
+        H, inliers, resid, iters, ok = ransac_homography(k_ref[pairs[:, 0]], k_frm[pairs[:, 1]], config.ransac)
+    else:
+        H, inliers, resid, iters, ok = None, np.zeros(M, dtype=bool), np.full(M, np.inf), 0, False
+    ok = bool(ok and H is not None)
+
+    # 4) chiếu 4 góc reference (TL, TR, BR, BL) vào frame
+    if ok:
+        corners = transfer_points(H, rect_corners(reference.shape[1], reference.shape[0]))
+        if not np.all(np.isfinite(corners)):
+            ok = False
+    if not ok:
+        H = None
+        corners = np.full((4, 2), np.nan)
+
+    n_in = int(np.sum(inliers))
+    diag = {
+        "n_keypoints_ref": int(len(k_ref)),
+        "n_keypoints_frame": int(len(k_frm)),
+        "n_matches": int(M),
+        "n_inliers": n_in,
+        "inlier_ratio": float(n_in / M) if M > 0 else float("nan"),
+        "median_residual": float(np.median(np.sqrt(resid[inliers] / 2.0))) if n_in > 0 else float("nan"),
+        "iterations": int(iters),
+        "status": ok,
+        "residuals": np.asarray(resid, dtype=np.float64),
+        "keypoints_ref": k_ref,
+        "keypoints_frame": k_frm,
+    }
+    return H, corners, pairs, np.asarray(inliers, dtype=bool), diag
 
 
 def artwork_to_frame(artwork: np.ndarray, H: np.ndarray, config: LocalisationConfig) -> np.ndarray:
@@ -50,7 +95,15 @@ def artwork_to_frame(artwork: np.ndarray, H: np.ndarray, config: LocalisationCon
     the two transformations compose.
     """
     # YOUR CODE HERE
-    raise NotImplementedError("YOUR CODE HERE")
+    ah, aw = artwork.shape[:2]
+    ref_shape = config.warp.reference_shape
+    rh, rw = (ref_shape[0], ref_shape[1]) if ref_shape is not None else (ah, aw)
+    # artwork pixel -> reference pixel (co giãn chữ nhật), rồi reference -> frame (H)
+    S = rectangle_to_rectangle((aw, ah), (rw, rh))
+    Ha = np.asarray(H, dtype=np.float64) @ S
+    if abs(Ha[2, 2]) > 1e-12:
+        Ha = Ha / Ha[2, 2]
+    return Ha
 
 
 def overlay_frame(frame: np.ndarray, artwork: np.ndarray, H: np.ndarray,
@@ -61,7 +114,28 @@ def overlay_frame(frame: np.ndarray, artwork: np.ndarray, H: np.ndarray,
     paint it where the coverage mask is set. Returns an RGB float32 frame.
     """
     # YOUR CODE HERE
-    raise NotImplementedError("YOUR CODE HERE")
+    out = np.asarray(frame, dtype=np.float32).copy()
+    if out.max() > 1.0:                                   # chấp nhận frame uint8
+        out /= 255.0
+    if H is None:
+        return out
+    art = np.asarray(artwork, dtype=np.float32)
+    if art.max() > 1.0:
+        art = art / 255.0
+    Ha = artwork_to_frame(art, H, config)
+    warped, cov = warp_artwork(art, Ha, out.shape)
+
+    # alpha = coverage (tuỳ chọn: làm mềm mép bằng feather)
+    alpha = cov.astype(np.float32)
+    if config.warp.feather and config.warp.feather > 0:
+        from .supplied import gaussian_smooth
+        alpha = np.clip(gaussian_smooth(alpha, config.warp.feather / 2.0), 0, 1) * cov
+    if config.warp.match_gain and cov.any():              # tuỳ chọn: khớp độ sáng trung bình
+        gain = out[cov].mean() / max(float(warped[cov].mean()), 1e-6)
+        warped = np.clip(warped * gain, 0, 1)
+    if out.ndim == 3 and alpha.ndim == 2:
+        alpha = alpha[..., None]
+    return (alpha * warped + (1 - alpha) * out).astype(np.float32)
 
 
 def evaluate_audit_frames(reference: np.ndarray, frames: Dict[int, np.ndarray],
@@ -74,7 +148,23 @@ def evaluate_audit_frames(reference: np.ndarray, frames: Dict[int, np.ndarray],
     from ``metrics.summarise_errors`` using ``config.success_threshold``.
     """
     # YOUR CODE HERE
-    raise NotImplementedError("YOUR CODE HERE")
+    per_frame, errors = {}, []
+    for f in sorted(gt_corners):
+        gt = np.asarray(gt_corners[f], dtype=np.float64)
+        if f not in frames:                               # frame thiếu -> tính là thất bại
+            per_frame[int(f)] = {"error": float("inf"), "n_matches": 0, "n_inliers": 0,
+                                 "inlier_ratio": float("nan"), "median_residual": float("nan"),
+                                 "status": False, "corners": np.full((4, 2), np.nan)}
+            errors.append(float("inf"))
+            continue
+        H, corners, pairs, inliers, diag = localise_board(reference, frames[f], config)
+        err = metrics.corner_error(corners, gt) if diag["status"] else float("inf")
+        errors.append(err)
+        per_frame[int(f)] = {"error": float(err), "n_matches": diag["n_matches"],
+                             "n_inliers": diag["n_inliers"], "inlier_ratio": diag["inlier_ratio"],
+                             "median_residual": diag["median_residual"], "status": diag["status"],
+                             "corners": corners}
+    return {"per_frame": per_frame, "summary": metrics.summarise_errors(errors, config.success_threshold)}
 
 
 __all__ = ["localise_board", "artwork_to_frame", "overlay_frame", "evaluate_audit_frames"]

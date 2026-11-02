@@ -1,0 +1,17 @@
+# macOS
+.DS_Store
+
+# Python
+__pycache__/
+*.py[cod]
+.ipynb_checkpoints/
+.venv/
+venv/
+.pytest_cache/
+
+# Extracted video frames (large, regenerate locally)
+data/common_clip/frames/
+
+# Editors
+.vscode/
+.idea/
