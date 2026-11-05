@@ -1,0 +1,52 @@
+Input #0, mov,mp4,m4a,3gp,3g2,mj2, from 'D:\CVPR\Lab2\CS4243_Lab2\data\video\video.mp4':
+  Metadata:
+    major_brand     : mp42
+    minor_version   : 1
+    compatible_brands: isommp41mp42
+    creation_time   : 2026-11-05T07:18:19.000000Z
+  Duration: 00:00:16.07, start: 0.000000, bitrate: 1313 kb/s
+  Stream #0:0[0x1](und): Video: h264 (High) (avc1 / 0x31637661), yuv420p(tv, bt709, progressive), 854x480, 1178 kb/s, 29.94 fps, 30 tbr, 600 tbn (default)
+      Metadata:
+        creation_time   : 2026-11-05T07:18:19.000000Z
+        handler_name    : Core Media Video
+        vendor_id       : [0][0][0][0]
+  Stream #0:1[0x2](und): Audio: aac (LC) (mp4a / 0x6134706D), 44100 Hz, stereo, fltp, 129 kb/s (default)
+      Metadata:
+        creation_time   : 2026-11-05T07:18:19.000000Z
+        handler_name    : Core Media Audio
+        vendor_id       : [0][0][0][0]
+Stream mapping:
+  Stream #0:0 -> #0:0 (h264 (native) -> h264 (libx264))
+[libx264 @ 000001e6dd7ce600] using cpu capabilities: MMX2 SSE2Fast SSSE3 SSE4.2 AVX FMA3 BMI2 AVX2
+[libx264 @ 000001e6dd7ce600] profile High, level 3.1, 4:2:0, 8-bit
+[libx264 @ 000001e6dd7ce600] 264 - core 164 r3192 c24e06c - H.264/MPEG-4 AVC codec - Copyleft 2003-2024 - http://www.videolan.org/x264.html - options: cabac=1 ref=3 deblock=1:0:0 analyse=0x3:0x113 me=hex subme=7 psy=1 psy_rd=1.00:0.00 mixed_ref=1 me_range=16 chroma_me=1 trellis=1 8x8dct=1 cqm=0 deadzone=21,11 fast_pskip=1 chroma_qp_offset=-2 threads=15 lookahead_threads=2 sliced_threads=0 nr=0 decimate=1 interlaced=0 bluray_compat=0 constrained_intra=0 bframes=3 b_pyramid=2 b_adapt=1 b_bias=0 direct=1 weightb=1 open_gop=0 weightp=2 keyint=250 keyint_min=25 scenecut=40 intra_refresh=0 rc_lookahead=40 rc=crf mbtree=1 crf=18.0 qcomp=0.60 qpmin=0 qpmax=69 qpstep=4 ip_ratio=1.40 aq=1:1.00
+Output #0, mp4, to 'D:\CVPR\Lab2\CS4243_Lab2\data\personal\poster_01\clip.mp4':
+  Stream #0:0: Video: h264 (avc1 / 0x31637661), yuv420p(tv, bt709, progressive), 854x480, q=2-31, 30 fps, 15360 tbn (default)
+      Metadata:
+        encoder         : Lavc libx264
+      Side data:
+        cpb: bitrate max/min/avg: 0/0/0 buffer size: 0 vbv_delay: N/A
+frame=   91 fps=0.0 q=24.0 size=     256KiB time=00:00:02.96 bitrate= 707.0kbits/s speed=5.84x    
+frame=  218 fps=213 q=24.0 size=    1024KiB time=00:00:07.20 bitrate=1165.1kbits/s speed=7.04x    
+frame=  347 fps=225 q=24.0 size=    1792KiB time=00:00:11.50 bitrate=1276.6kbits/s speed=7.47x    
+[mp4 @ 000001e6dd7d7b40] Starting second pass: moving the moov atom to the beginning of the file
+[out#0/mp4 @ 000001e6dd7d7a40] video:2554KiB audio:0KiB subtitle:0KiB other streams:0KiB global headers:0KiB muxing overhead: 0.239560%
+frame=  450 fps=236 q=-1.0 Lsize=    2560KiB time=00:00:14.93 bitrate=1404.6kbits/s speed=7.82x    
+[libx264 @ 000001e6dd7ce600] frame I:2     Avg QP:13.75  size: 42147
+[libx264 @ 000001e6dd7ce600] frame P:120   Avg QP:16.45  size: 14571
+[libx264 @ 000001e6dd7ce600] frame B:328   Avg QP:20.71  size:  2385
+[libx264 @ 000001e6dd7ce600] consecutive B-frames:  0.4%  6.7%  1.3% 91.6%
+[libx264 @ 000001e6dd7ce600] mb I  I16..4: 14.1% 57.0% 28.9%
+[libx264 @ 000001e6dd7ce600] mb P  I16..4:  8.3% 15.3%  2.3%  P16..4: 37.2% 21.5% 11.2%  0.0%  0.0%    skip: 4.1%
+[libx264 @ 000001e6dd7ce600] mb B  I16..4:  0.8%  1.1%  0.1%  B16..8: 39.5%  6.0%  0.8%  direct: 3.1%  skip:48.6%  L0:41.3% L1:48.0% BI:10.7%
+[libx264 @ 000001e6dd7ce600] 8x8 transform intra:58.1% inter:72.8%
+[libx264 @ 000001e6dd7ce600] coded y,uvDC,uvAC intra: 32.5% 48.6% 17.8% inter: 15.3% 22.2% 2.7%
+[libx264 @ 000001e6dd7ce600] i16 v,h,dc,p: 32% 30% 19% 19%
+[libx264 @ 000001e6dd7ce600] i8 v,h,dc,ddl,ddr,vr,hd,vl,hu: 24% 26% 35%  3%  2%  2%  3%  2%  3%
+[libx264 @ 000001e6dd7ce600] i4 v,h,dc,ddl,ddr,vr,hd,vl,hu: 33% 28% 17%  4%  5%  4%  4%  3%  3%
+[libx264 @ 000001e6dd7ce600] i8c dc,h,v,p: 52% 20% 24%  4%
+[libx264 @ 000001e6dd7ce600] Weighted P-Frames: Y:6.7% UV:0.0%
+[libx264 @ 000001e6dd7ce600] ref P L0: 67.1% 18.7% 11.7%  2.5%  0.1%
+[libx264 @ 000001e6dd7ce600] ref B L0: 92.0%  7.2%  0.9%
+[libx264 @ 000001e6dd7ce600] ref B L1: 97.9%  2.1%
+[libx264 @ 000001e6dd7ce600] kb/s:1394.64

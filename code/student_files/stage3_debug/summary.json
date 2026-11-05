@@ -1,0 +1,500 @@
+{
+  "seed_note": "Board 1, background 2, artwork 3; fit seeds 10/11; case seeds 100..105",
+  "runtime": {
+    "python": "3.12.4",
+    "numpy": "1.26.4",
+    "opencv": "4.11.0"
+  },
+  "thresholds": {
+    "mode": "difference",
+    "strong": 0.25,
+    "weak": 0.12,
+    "min_area": 60,
+    "open_radius": 1,
+    "connectivity": 8,
+    "gain_quantile": 0.5,
+    "feather": 3
+  },
+  "search_log": [
+    {
+      "strong": 0.15,
+      "weak": 0.06,
+      "min_area": 30,
+      "mean_iou": 1.0,
+      "n_scored": 2
+    },
+    {
+      "strong": 0.15,
+      "weak": 0.06,
+      "min_area": 60,
+      "mean_iou": 1.0,
+      "n_scored": 2
+    },
+    {
+      "strong": 0.15,
+      "weak": 0.06,
+      "min_area": 120,
+      "mean_iou": 1.0,
+      "n_scored": 2
+    },
+    {
+      "strong": 0.15,
+      "weak": 0.09,
+      "min_area": 30,
+      "mean_iou": 1.0,
+      "n_scored": 2
+    },
+    {
+      "strong": 0.15,
+      "weak": 0.09,
+      "min_area": 60,
+      "mean_iou": 1.0,
+      "n_scored": 2
+    },
+    {
+      "strong": 0.15,
+      "weak": 0.09,
+      "min_area": 120,
+      "mean_iou": 1.0,
+      "n_scored": 2
+    },
+    {
+      "strong": 0.15,
+      "weak": 0.12,
+      "min_area": 30,
+      "mean_iou": 1.0,
+      "n_scored": 2
+    },
+    {
+      "strong": 0.15,
+      "weak": 0.12,
+      "min_area": 60,
+      "mean_iou": 1.0,
+      "n_scored": 2
+    },
+    {
+      "strong": 0.15,
+      "weak": 0.12,
+      "min_area": 120,
+      "mean_iou": 1.0,
+      "n_scored": 2
+    },
+    {
+      "strong": 0.2,
+      "weak": 0.06,
+      "min_area": 30,
+      "mean_iou": 1.0,
+      "n_scored": 2
+    },
+    {
+      "strong": 0.2,
+      "weak": 0.06,
+      "min_area": 60,
+      "mean_iou": 1.0,
+      "n_scored": 2
+    },
+    {
+      "strong": 0.2,
+      "weak": 0.06,
+      "min_area": 120,
+      "mean_iou": 1.0,
+      "n_scored": 2
+    },
+    {
+      "strong": 0.2,
+      "weak": 0.09,
+      "min_area": 30,
+      "mean_iou": 1.0,
+      "n_scored": 2
+    },
+    {
+      "strong": 0.2,
+      "weak": 0.09,
+      "min_area": 60,
+      "mean_iou": 1.0,
+      "n_scored": 2
+    },
+    {
+      "strong": 0.2,
+      "weak": 0.09,
+      "min_area": 120,
+      "mean_iou": 1.0,
+      "n_scored": 2
+    },
+    {
+      "strong": 0.2,
+      "weak": 0.12,
+      "min_area": 30,
+      "mean_iou": 1.0,
+      "n_scored": 2
+    },
+    {
+      "strong": 0.2,
+      "weak": 0.12,
+      "min_area": 60,
+      "mean_iou": 1.0,
+      "n_scored": 2
+    },
+    {
+      "strong": 0.2,
+      "weak": 0.12,
+      "min_area": 120,
+      "mean_iou": 1.0,
+      "n_scored": 2
+    },
+    {
+      "strong": 0.2,
+      "weak": 0.15,
+      "min_area": 30,
+      "mean_iou": 1.0,
+      "n_scored": 2
+    },
+    {
+      "strong": 0.2,
+      "weak": 0.15,
+      "min_area": 60,
+      "mean_iou": 1.0,
+      "n_scored": 2
+    },
+    {
+      "strong": 0.2,
+      "weak": 0.15,
+      "min_area": 120,
+      "mean_iou": 1.0,
+      "n_scored": 2
+    },
+    {
+      "strong": 0.25,
+      "weak": 0.06,
+      "min_area": 30,
+      "mean_iou": 1.0,
+      "n_scored": 2
+    },
+    {
+      "strong": 0.25,
+      "weak": 0.06,
+      "min_area": 60,
+      "mean_iou": 1.0,
+      "n_scored": 2
+    },
+    {
+      "strong": 0.25,
+      "weak": 0.06,
+      "min_area": 120,
+      "mean_iou": 1.0,
+      "n_scored": 2
+    },
+    {
+      "strong": 0.25,
+      "weak": 0.09,
+      "min_area": 30,
+      "mean_iou": 1.0,
+      "n_scored": 2
+    },
+    {
+      "strong": 0.25,
+      "weak": 0.09,
+      "min_area": 60,
+      "mean_iou": 1.0,
+      "n_scored": 2
+    },
+    {
+      "strong": 0.25,
+      "weak": 0.09,
+      "min_area": 120,
+      "mean_iou": 1.0,
+      "n_scored": 2
+    },
+    {
+      "strong": 0.25,
+      "weak": 0.12,
+      "min_area": 30,
+      "mean_iou": 1.0,
+      "n_scored": 2
+    },
+    {
+      "strong": 0.25,
+      "weak": 0.12,
+      "min_area": 60,
+      "mean_iou": 1.0,
+      "n_scored": 2
+    },
+    {
+      "strong": 0.25,
+      "weak": 0.12,
+      "min_area": 120,
+      "mean_iou": 1.0,
+      "n_scored": 2
+    },
+    {
+      "strong": 0.25,
+      "weak": 0.15,
+      "min_area": 30,
+      "mean_iou": 1.0,
+      "n_scored": 2
+    },
+    {
+      "strong": 0.25,
+      "weak": 0.15,
+      "min_area": 60,
+      "mean_iou": 1.0,
+      "n_scored": 2
+    },
+    {
+      "strong": 0.25,
+      "weak": 0.15,
+      "min_area": 120,
+      "mean_iou": 1.0,
+      "n_scored": 2
+    },
+    {
+      "strong": 0.3,
+      "weak": 0.06,
+      "min_area": 30,
+      "mean_iou": 1.0,
+      "n_scored": 2
+    },
+    {
+      "strong": 0.3,
+      "weak": 0.06,
+      "min_area": 60,
+      "mean_iou": 1.0,
+      "n_scored": 2
+    },
+    {
+      "strong": 0.3,
+      "weak": 0.06,
+      "min_area": 120,
+      "mean_iou": 1.0,
+      "n_scored": 2
+    },
+    {
+      "strong": 0.3,
+      "weak": 0.09,
+      "min_area": 30,
+      "mean_iou": 1.0,
+      "n_scored": 2
+    },
+    {
+      "strong": 0.3,
+      "weak": 0.09,
+      "min_area": 60,
+      "mean_iou": 1.0,
+      "n_scored": 2
+    },
+    {
+      "strong": 0.3,
+      "weak": 0.09,
+      "min_area": 120,
+      "mean_iou": 1.0,
+      "n_scored": 2
+    },
+    {
+      "strong": 0.3,
+      "weak": 0.12,
+      "min_area": 30,
+      "mean_iou": 1.0,
+      "n_scored": 2
+    },
+    {
+      "strong": 0.3,
+      "weak": 0.12,
+      "min_area": 60,
+      "mean_iou": 1.0,
+      "n_scored": 2
+    },
+    {
+      "strong": 0.3,
+      "weak": 0.12,
+      "min_area": 120,
+      "mean_iou": 1.0,
+      "n_scored": 2
+    },
+    {
+      "strong": 0.3,
+      "weak": 0.15,
+      "min_area": 30,
+      "mean_iou": 1.0,
+      "n_scored": 2
+    },
+    {
+      "strong": 0.3,
+      "weak": 0.15,
+      "min_area": 60,
+      "mean_iou": 1.0,
+      "n_scored": 2
+    },
+    {
+      "strong": 0.3,
+      "weak": 0.15,
+      "min_area": 120,
+      "mean_iou": 1.0,
+      "n_scored": 2
+    },
+    {
+      "strong": 0.35,
+      "weak": 0.06,
+      "min_area": 30,
+      "mean_iou": 1.0,
+      "n_scored": 2
+    },
+    {
+      "strong": 0.35,
+      "weak": 0.06,
+      "min_area": 60,
+      "mean_iou": 1.0,
+      "n_scored": 2
+    },
+    {
+      "strong": 0.35,
+      "weak": 0.06,
+      "min_area": 120,
+      "mean_iou": 1.0,
+      "n_scored": 2
+    },
+    {
+      "strong": 0.35,
+      "weak": 0.09,
+      "min_area": 30,
+      "mean_iou": 1.0,
+      "n_scored": 2
+    },
+    {
+      "strong": 0.35,
+      "weak": 0.09,
+      "min_area": 60,
+      "mean_iou": 1.0,
+      "n_scored": 2
+    },
+    {
+      "strong": 0.35,
+      "weak": 0.09,
+      "min_area": 120,
+      "mean_iou": 1.0,
+      "n_scored": 2
+    },
+    {
+      "strong": 0.35,
+      "weak": 0.12,
+      "min_area": 30,
+      "mean_iou": 1.0,
+      "n_scored": 2
+    },
+    {
+      "strong": 0.35,
+      "weak": 0.12,
+      "min_area": 60,
+      "mean_iou": 1.0,
+      "n_scored": 2
+    },
+    {
+      "strong": 0.35,
+      "weak": 0.12,
+      "min_area": 120,
+      "mean_iou": 1.0,
+      "n_scored": 2
+    },
+    {
+      "strong": 0.35,
+      "weak": 0.15,
+      "min_area": 30,
+      "mean_iou": 1.0,
+      "n_scored": 2
+    },
+    {
+      "strong": 0.35,
+      "weak": 0.15,
+      "min_area": 60,
+      "mean_iou": 1.0,
+      "n_scored": 2
+    },
+    {
+      "strong": 0.35,
+      "weak": 0.15,
+      "min_area": 120,
+      "mean_iou": 1.0,
+      "n_scored": 2
+    }
+  ],
+  "cases": [
+    {
+      "case": "clean_lighting",
+      "seed": 100,
+      "subset": "synthetic-debug",
+      "variant": "known-homography",
+      "iou": NaN,
+      "f1": NaN,
+      "leakage": NaN,
+      "baseline_leakage": NaN,
+      "false_occlusion": 0.0,
+      "components": 0,
+      "gt_pixels": 0
+    },
+    {
+      "case": "ball",
+      "seed": 101,
+      "subset": "synthetic-debug",
+      "variant": "known-homography",
+      "iou": 1.0,
+      "f1": 1.0,
+      "leakage": 0.0,
+      "baseline_leakage": 1.0,
+      "false_occlusion": 0.0,
+      "components": 1,
+      "gt_pixels": 3853
+    },
+    {
+      "case": "thin_pole",
+      "seed": 102,
+      "subset": "synthetic-debug",
+      "variant": "known-homography",
+      "iou": 0.9830188679245283,
+      "f1": 0.9914367269267365,
+      "leakage": 0.0,
+      "baseline_leakage": 0.9716981132075472,
+      "false_occlusion": 0.0,
+      "components": 1,
+      "gt_pixels": 530
+    },
+    {
+      "case": "hand",
+      "seed": 103,
+      "subset": "synthetic-debug",
+      "variant": "known-homography",
+      "iou": 0.9985364068788877,
+      "f1": 0.9992676675210546,
+      "leakage": 0.0,
+      "baseline_leakage": 1.0,
+      "false_occlusion": 0.0,
+      "components": 1,
+      "gt_pixels": 2733
+    },
+    {
+      "case": "strong_perspective",
+      "seed": 104,
+      "subset": "synthetic-debug",
+      "variant": "known-homography",
+      "iou": NaN,
+      "f1": NaN,
+      "leakage": NaN,
+      "baseline_leakage": NaN,
+      "false_occlusion": 0.0,
+      "components": 0,
+      "gt_pixels": 0
+    },
+    {
+      "case": "blurred_ball",
+      "seed": 105,
+      "subset": "synthetic-debug",
+      "variant": "known-homography",
+      "iou": 0.5636256273988781,
+      "f1": 0.7209214501510574,
+      "leakage": 0.0,
+      "baseline_leakage": 1.0,
+      "false_occlusion": 0.07343993563634535,
+      "components": 23,
+      "gt_pixels": 3853
+    }
+  ],
+  "note": "Development only. Known synthetic homographies isolate Stage 3. NaN metrics are undefined and retained, never replaced by zero."
+}

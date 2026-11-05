@@ -1,0 +1,110 @@
+{
+  "clip": "common_clip",
+  "subset": "test",
+  "variant": "independent",
+  "processing_width": 640,
+  "rows": [
+    {
+      "clip": "common_clip",
+      "subset": "test",
+      "variant": "independent",
+      "frame": 144,
+      "status": "scored",
+      "processing_width": 640,
+      "iou": 0.8688727083604213,
+      "f1": 0.9298361568163634,
+      "boundary_f1": 0.4300747292969346,
+      "leakage": 0.008866666666666667,
+      "baseline_iou": 0.0,
+      "baseline_f1": 0.0,
+      "baseline_boundary_f1": 0.0,
+      "baseline_leakage": 0.8751333333333333,
+      "components": 1,
+      "mask_pixels": 13747
+    },
+    {
+      "clip": "common_clip",
+      "subset": "test",
+      "variant": "independent",
+      "frame": 208,
+      "status": "scored",
+      "processing_width": 640,
+      "iou": 0.9409081484553182,
+      "f1": 0.9695545347719261,
+      "boundary_f1": 0.8780225772583363,
+      "leakage": 0.006069694373036275,
+      "baseline_iou": 0.0,
+      "baseline_f1": 0.0,
+      "baseline_boundary_f1": 0.0,
+      "baseline_leakage": 0.9667952013710368,
+      "components": 1,
+      "mask_pixels": 14079
+    },
+    {
+      "clip": "common_clip",
+      "subset": "test",
+      "variant": "independent",
+      "frame": 448,
+      "status": "scored",
+      "processing_width": 640,
+      "iou": 0.6892258382642998,
+      "f1": 0.81602568780559,
+      "boundary_f1": 0.3943794393606677,
+      "leakage": 0.006059043444630656,
+      "baseline_iou": 0.0,
+      "baseline_f1": 0.0,
+      "baseline_boundary_f1": 0.0,
+      "baseline_leakage": 0.6980791543122341,
+      "components": 1,
+      "mask_pixels": 5946
+    }
+  ],
+  "summary": {
+    "expected": 3,
+    "scored": 3,
+    "hidden": 0,
+    "missing": 0,
+    "iou": {
+      "mean": 0.8330022316933464,
+      "n_scored": 3
+    },
+    "f1": {
+      "mean": 0.9051387931312932,
+      "n_scored": 3
+    },
+    "boundary_f1": {
+      "mean": 0.5674922486386462,
+      "n_scored": 3
+    },
+    "leakage": {
+      "mean": 0.006998468161444532,
+      "n_scored": 3
+    },
+    "baseline_iou": {
+      "mean": 0.0,
+      "n_scored": 3
+    },
+    "baseline_f1": {
+      "mean": 0.0,
+      "n_scored": 3
+    },
+    "baseline_boundary_f1": {
+      "mean": 0.0,
+      "n_scored": 3
+    },
+    "baseline_leakage": {
+      "mean": 0.8466692296722015,
+      "n_scored": 3
+    }
+  },
+  "frozen_occlusion": {
+    "mode": "difference",
+    "strong": 0.25,
+    "weak": 0.12,
+    "min_area": 38,
+    "open_radius": 2,
+    "connectivity": 8,
+    "gain_quantile": 0.5,
+    "feather": 3
+  }
+}

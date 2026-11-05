@@ -1,0 +1,8 @@
+{
+  "decoded_frames": 450,
+  "first_pts": 0.0,
+  "last_pts": 14.966667,
+  "max_cfr_error_seconds": 3.333333342681044e-07,
+  "audio_present": false,
+  "extracted_frames": 450
+}

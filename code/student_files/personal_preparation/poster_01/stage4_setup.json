@@ -1,0 +1,38 @@
+{
+  "created_at_utc": "2026-11-05T08:20:18.587543+00:00",
+  "source_artwork": "data/artwork/ad3.jpg",
+  "source_size": [
+    1200,
+    1600
+  ],
+  "source_sha256": "5c2997a3b0199ed8ab579de3e7dfe33daea6d2c79de273af845fd9d213125c87",
+  "prepared_artwork": "data/artwork/ad3.png",
+  "prepared_size": [
+    960,
+    1362
+  ],
+  "prepared_sha256": "4c20c0ba677936a0e7df2b23b3f1af95e890efd431eb78e702547c69a81e3f4a",
+  "reference_size": [
+    320,
+    454
+  ],
+  "operation": "Deterministic RGB JPEG-to-PNG conversion; aspect-preserving Lanczos resize and symmetric black letterboxing",
+  "content_size": [
+    960,
+    1280
+  ],
+  "content_offset_xy": [
+    0,
+    41
+  ],
+  "source_origin": "User-provided file; original creator not established in this preparation step",
+  "visual_note": "Small cartoon burger face remains in the artwork; no content has been generated or removed",
+  "capture_information": "Student ID, iPhone device family, camera operator and no-body-parts statement provided by the user; physical poster dimensions not measured",
+  "first_frame_board_fraction": 0.31385026346604217,
+  "generative_status": "Planned only; no generation performed and no invocation log fabricated",
+  "markers": [
+    "[AI-CODE]",
+    "[AI-DESIGN]",
+    "[HUMAN-DATA]"
+  ]
+}

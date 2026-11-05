@@ -1,0 +1,317 @@
+[
+  {
+    "clip": "common_clip",
+    "subset": "validation",
+    "variant": "independent",
+    "frame": 96,
+    "ablation": "frozen",
+    "settings": {
+      "mode": "difference",
+      "strong": 0.25,
+      "weak": 0.12,
+      "min_area": 38,
+      "open_radius": 2,
+      "connectivity": 8,
+      "gain_quantile": 0.5,
+      "feather": 3
+    },
+    "iou": 0.8674416332910032,
+    "leakage": 0.015227367542761786,
+    "mask_pixels": 9529,
+    "components": 1
+  },
+  {
+    "clip": "common_clip",
+    "subset": "validation",
+    "variant": "independent",
+    "frame": 192,
+    "ablation": "frozen",
+    "settings": {
+      "mode": "difference",
+      "strong": 0.25,
+      "weak": 0.12,
+      "min_area": 38,
+      "open_radius": 2,
+      "connectivity": 8,
+      "gain_quantile": 0.5,
+      "feather": 3
+    },
+    "iou": 0.9234760825480138,
+    "leakage": 0.0008117389946924758,
+    "mask_pixels": 16234,
+    "components": 1
+  },
+  {
+    "clip": "common_clip",
+    "subset": "validation",
+    "variant": "independent",
+    "frame": 272,
+    "ablation": "frozen",
+    "settings": {
+      "mode": "difference",
+      "strong": 0.25,
+      "weak": 0.12,
+      "min_area": 38,
+      "open_radius": 2,
+      "connectivity": 8,
+      "gain_quantile": 0.5,
+      "feather": 3
+    },
+    "iou": 0.9004373177842565,
+    "leakage": 0.02484010114532203,
+    "mask_pixels": 6314,
+    "components": 1
+  },
+  {
+    "clip": "common_clip",
+    "subset": "validation",
+    "variant": "independent",
+    "frame": 96,
+    "ablation": "higher strong",
+    "settings": {
+      "mode": "difference",
+      "strong": 0.375,
+      "weak": 0.12,
+      "min_area": 38,
+      "open_radius": 2,
+      "connectivity": 8,
+      "gain_quantile": 0.5,
+      "feather": 3
+    },
+    "iou": 0.8674416332910032,
+    "leakage": 0.015227367542761786,
+    "mask_pixels": 9529,
+    "components": 1
+  },
+  {
+    "clip": "common_clip",
+    "subset": "validation",
+    "variant": "independent",
+    "frame": 192,
+    "ablation": "higher strong",
+    "settings": {
+      "mode": "difference",
+      "strong": 0.375,
+      "weak": 0.12,
+      "min_area": 38,
+      "open_radius": 2,
+      "connectivity": 8,
+      "gain_quantile": 0.5,
+      "feather": 3
+    },
+    "iou": 0.9234760825480138,
+    "leakage": 0.0008117389946924758,
+    "mask_pixels": 16234,
+    "components": 1
+  },
+  {
+    "clip": "common_clip",
+    "subset": "validation",
+    "variant": "independent",
+    "frame": 272,
+    "ablation": "higher strong",
+    "settings": {
+      "mode": "difference",
+      "strong": 0.375,
+      "weak": 0.12,
+      "min_area": 38,
+      "open_radius": 2,
+      "connectivity": 8,
+      "gain_quantile": 0.5,
+      "feather": 3
+    },
+    "iou": 0.9004373177842565,
+    "leakage": 0.02484010114532203,
+    "mask_pixels": 6314,
+    "components": 1
+  },
+  {
+    "clip": "common_clip",
+    "subset": "validation",
+    "variant": "independent",
+    "frame": 96,
+    "ablation": "larger min_area",
+    "settings": {
+      "mode": "difference",
+      "strong": 0.25,
+      "weak": 0.12,
+      "min_area": 228,
+      "open_radius": 2,
+      "connectivity": 8,
+      "gain_quantile": 0.5,
+      "feather": 3
+    },
+    "iou": 0.8674416332910032,
+    "leakage": 0.015227367542761786,
+    "mask_pixels": 9529,
+    "components": 1
+  },
+  {
+    "clip": "common_clip",
+    "subset": "validation",
+    "variant": "independent",
+    "frame": 192,
+    "ablation": "larger min_area",
+    "settings": {
+      "mode": "difference",
+      "strong": 0.25,
+      "weak": 0.12,
+      "min_area": 228,
+      "open_radius": 2,
+      "connectivity": 8,
+      "gain_quantile": 0.5,
+      "feather": 3
+    },
+    "iou": 0.9234760825480138,
+    "leakage": 0.0008117389946924758,
+    "mask_pixels": 16234,
+    "components": 1
+  },
+  {
+    "clip": "common_clip",
+    "subset": "validation",
+    "variant": "independent",
+    "frame": 272,
+    "ablation": "larger min_area",
+    "settings": {
+      "mode": "difference",
+      "strong": 0.25,
+      "weak": 0.12,
+      "min_area": 228,
+      "open_radius": 2,
+      "connectivity": 8,
+      "gain_quantile": 0.5,
+      "feather": 3
+    },
+    "iou": 0.9004373177842565,
+    "leakage": 0.02484010114532203,
+    "mask_pixels": 6314,
+    "components": 1
+  },
+  {
+    "clip": "common_clip",
+    "subset": "validation",
+    "variant": "independent",
+    "frame": 96,
+    "ablation": "no hysteresis",
+    "settings": {
+      "mode": "difference",
+      "strong": 0.25,
+      "weak": 0.25,
+      "min_area": 38,
+      "open_radius": 2,
+      "connectivity": 8,
+      "gain_quantile": 0.5,
+      "feather": 3
+    },
+    "iou": 0.8224630342313146,
+    "leakage": 0.045473508552357114,
+    "mask_pixels": 8407,
+    "components": 1
+  },
+  {
+    "clip": "common_clip",
+    "subset": "validation",
+    "variant": "independent",
+    "frame": 192,
+    "ablation": "no hysteresis",
+    "settings": {
+      "mode": "difference",
+      "strong": 0.25,
+      "weak": 0.25,
+      "min_area": 38,
+      "open_radius": 2,
+      "connectivity": 8,
+      "gain_quantile": 0.5,
+      "feather": 3
+    },
+    "iou": 0.5914969985766446,
+    "leakage": 0.29247580393381206,
+    "mask_pixels": 9702,
+    "components": 3
+  },
+  {
+    "clip": "common_clip",
+    "subset": "validation",
+    "variant": "independent",
+    "frame": 272,
+    "ablation": "no hysteresis",
+    "settings": {
+      "mode": "difference",
+      "strong": 0.25,
+      "weak": 0.25,
+      "min_area": 38,
+      "open_radius": 2,
+      "connectivity": 8,
+      "gain_quantile": 0.5,
+      "feather": 3
+    },
+    "iou": 0.6194362017804155,
+    "leakage": 0.2576230849323219,
+    "mask_pixels": 4192,
+    "components": 2
+  },
+  {
+    "clip": "common_clip",
+    "subset": "validation",
+    "variant": "independent",
+    "frame": 96,
+    "ablation": "no opening",
+    "settings": {
+      "mode": "difference",
+      "strong": 0.25,
+      "weak": 0.12,
+      "min_area": 38,
+      "open_radius": 0,
+      "connectivity": 8,
+      "gain_quantile": 0.5,
+      "feather": 3
+    },
+    "iou": 0.8623835403726708,
+    "leakage": 0.015227367542761786,
+    "mask_pixels": 9602,
+    "components": 2
+  },
+  {
+    "clip": "common_clip",
+    "subset": "validation",
+    "variant": "independent",
+    "frame": 192,
+    "ablation": "no opening",
+    "settings": {
+      "mode": "difference",
+      "strong": 0.25,
+      "weak": 0.12,
+      "min_area": 38,
+      "open_radius": 0,
+      "connectivity": 8,
+      "gain_quantile": 0.5,
+      "feather": 3
+    },
+    "iou": 0.9214706407281813,
+    "leakage": 0.0007492975335622854,
+    "mask_pixels": 16283,
+    "components": 1
+  },
+  {
+    "clip": "common_clip",
+    "subset": "validation",
+    "variant": "independent",
+    "frame": 272,
+    "ablation": "no opening",
+    "settings": {
+      "mode": "difference",
+      "strong": 0.25,
+      "weak": 0.12,
+      "min_area": 38,
+      "open_radius": 0,
+      "connectivity": 8,
+      "gain_quantile": 0.5,
+      "feather": 3
+    },
+    "iou": 0.875,
+    "leakage": 0.024096385542168676,
+    "mask_pixels": 6537,
+    "components": 5
+  }
+]

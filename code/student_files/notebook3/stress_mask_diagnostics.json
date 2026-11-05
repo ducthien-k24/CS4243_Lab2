@@ -1,0 +1,293 @@
+{
+  "processing_width": 640,
+  "evaluation_only": true,
+  "warning": "Rows labelled GT-fallback are NOT pipeline predictions and cannot enter final stress tables.",
+  "rows": [
+    {
+      "clip": "combined",
+      "frame": 212,
+      "H": "GT-fallback",
+      "iou": 0.9611113980271652,
+      "f1": 0.9801701208753588,
+      "leakage": 0.0008442826236082528,
+      "baseline_leakage": 0.9741966123159728,
+      "false_occlusion": 0.012529651481053464,
+      "coverage_visible": 0.9451675688826714
+    },
+    {
+      "clip": "combined",
+      "frame": 216,
+      "H": "frozen",
+      "iou": 0.9753398672146696,
+      "f1": 0.987516005121639,
+      "leakage": 0.0013959239022055597,
+      "baseline_leakage": 0.9780241694252781,
+      "false_occlusion": 0.007773400063890959,
+      "coverage_visible": 0.9401554680012778
+    },
+    {
+      "clip": "combined",
+      "frame": 220,
+      "H": "frozen",
+      "iou": 0.9672571428571428,
+      "f1": 0.9833560867923432,
+      "leakage": 0.003450655624568668,
+      "baseline_leakage": 0.9678513917644352,
+      "false_occlusion": 0.003169392721716,
+      "coverage_visible": 0.9669477616163903
+    },
+    {
+      "clip": "combined",
+      "frame": 304,
+      "H": "frozen",
+      "iou": 0.8731374172185431,
+      "f1": 0.9322726770522595,
+      "leakage": 0.0,
+      "baseline_leakage": 0.923006625542609,
+      "false_occlusion": 0.017932447877665236,
+      "coverage_visible": 0.9210578173649154
+    },
+    {
+      "clip": "combined",
+      "frame": 306,
+      "H": "frozen",
+      "iou": 0.8892093246815669,
+      "f1": 0.9413560615697748,
+      "leakage": 0.0,
+      "baseline_leakage": 0.8872351160443996,
+      "false_occlusion": 0.0076953125,
+      "coverage_visible": 0.9258203125
+    },
+    {
+      "clip": "combined",
+      "frame": 314,
+      "H": "frozen",
+      "iou": 0.8361847733105218,
+      "f1": 0.9107849988353133,
+      "leakage": 0.0,
+      "baseline_leakage": 0.8606255749770009,
+      "false_occlusion": 0.012894095447755327,
+      "coverage_visible": 0.926448620174542
+    },
+    {
+      "clip": "viewpoint",
+      "frame": 128,
+      "H": "frozen",
+      "iou": NaN,
+      "f1": NaN,
+      "leakage": NaN,
+      "baseline_leakage": NaN,
+      "false_occlusion": 0.0,
+      "coverage_visible": 0.9591146633876422
+    },
+    {
+      "clip": "viewpoint",
+      "frame": 224,
+      "H": "frozen",
+      "iou": NaN,
+      "f1": NaN,
+      "leakage": NaN,
+      "baseline_leakage": NaN,
+      "false_occlusion": 0.04472764237720973,
+      "coverage_visible": 0.8923214241440012
+    },
+    {
+      "clip": "viewpoint",
+      "frame": 288,
+      "H": "GT-fallback",
+      "iou": NaN,
+      "f1": NaN,
+      "leakage": NaN,
+      "baseline_leakage": NaN,
+      "false_occlusion": 0.027282218893277043,
+      "coverage_visible": 0.9007671705479141
+    }
+  ],
+  "viewpoint_diagnostics": [
+    {
+      "clip": "coke_perspective",
+      "subset": "test",
+      "variant": "independent",
+      "frame": 128,
+      "homography_source": "frozen",
+      "gain": 1.0379491365879872,
+      "offset": -0.01225567612018058,
+      "keystone_edge_ratio": 1.0940749722703462,
+      "fraction_above_weak_in_covered_board": 0.057874605022451356,
+      "false_occlusion": 0.0,
+      "component_stats": []
+    },
+    {
+      "clip": "coke_perspective",
+      "subset": "test",
+      "variant": "independent",
+      "frame": 224,
+      "homography_source": "frozen",
+      "gain": 1.0683302653873825,
+      "offset": -0.021837483086463105,
+      "keystone_edge_ratio": 1.497374752963807,
+      "fraction_above_weak_in_covered_board": 0.2076672436615416,
+      "false_occlusion": 0.04472764237720973,
+      "component_stats": [
+        [
+          1,
+          167,
+          55,
+          39,
+          45,
+          617
+        ],
+        [
+          2,
+          167,
+          73,
+          11,
+          16,
+          112
+        ],
+        [
+          3,
+          227,
+          81,
+          20,
+          55,
+          419
+        ],
+        [
+          4,
+          247,
+          87,
+          14,
+          13,
+          84
+        ],
+        [
+          5,
+          167,
+          94,
+          8,
+          8,
+          43
+        ],
+        [
+          6,
+          262,
+          94,
+          19,
+          30,
+          301
+        ],
+        [
+          7,
+          189,
+          101,
+          8,
+          18,
+          75
+        ],
+        [
+          11,
+          254,
+          125,
+          11,
+          12,
+          54
+        ],
+        [
+          12,
+          170,
+          152,
+          8,
+          21,
+          121
+        ]
+      ]
+    },
+    {
+      "clip": "coke_perspective",
+      "subset": "test",
+      "variant": "independent",
+      "frame": 288,
+      "homography_source": "GT-fallback",
+      "gain": 1.0093323248304205,
+      "offset": -0.008610729134778172,
+      "keystone_edge_ratio": 1.5558073125862943,
+      "fraction_above_weak_in_covered_board": 0.33198887343532685,
+      "false_occlusion": 0.027282218893277043,
+      "component_stats": [
+        [
+          1,
+          133,
+          40,
+          11,
+          12,
+          97
+        ],
+        [
+          3,
+          140,
+          54,
+          9,
+          8,
+          42
+        ],
+        [
+          7,
+          165,
+          82,
+          7,
+          15,
+          56
+        ],
+        [
+          10,
+          130,
+          114,
+          13,
+          9,
+          66
+        ],
+        [
+          12,
+          130,
+          128,
+          7,
+          21,
+          106
+        ],
+        [
+          25,
+          173,
+          171,
+          16,
+          16,
+          97
+        ],
+        [
+          26,
+          216,
+          171,
+          8,
+          9,
+          46
+        ],
+        [
+          30,
+          202,
+          187,
+          9,
+          11,
+          41
+        ],
+        [
+          38,
+          217,
+          237,
+          7,
+          12,
+          50
+        ]
+      ]
+    }
+  ]
+}

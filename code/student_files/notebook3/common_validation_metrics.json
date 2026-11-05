@@ -1,0 +1,110 @@
+{
+  "clip": "common_clip",
+  "subset": "validation",
+  "variant": "independent",
+  "processing_width": 640,
+  "rows": [
+    {
+      "clip": "common_clip",
+      "subset": "validation",
+      "variant": "independent",
+      "frame": 96,
+      "status": "scored",
+      "processing_width": 640,
+      "iou": 0.8674416332910032,
+      "f1": 0.929016059005074,
+      "boundary_f1": 0.633275551974739,
+      "leakage": 0.015227367542761786,
+      "baseline_iou": 0.0,
+      "baseline_f1": 0.0,
+      "baseline_boundary_f1": 0.0,
+      "baseline_leakage": 0.9120775969962454,
+      "components": 1,
+      "mask_pixels": 9529
+    },
+    {
+      "clip": "common_clip",
+      "subset": "validation",
+      "variant": "independent",
+      "frame": 192,
+      "status": "scored",
+      "processing_width": 640,
+      "iou": 0.9234760825480138,
+      "f1": 0.9602158206456014,
+      "boundary_f1": 0.5454717516797577,
+      "leakage": 0.0008117389946924758,
+      "baseline_iou": 0.0,
+      "baseline_f1": 0.0,
+      "baseline_boundary_f1": 0.0,
+      "baseline_leakage": 0.9546050577583516,
+      "components": 1,
+      "mask_pixels": 16234
+    },
+    {
+      "clip": "common_clip",
+      "subset": "validation",
+      "variant": "independent",
+      "frame": 272,
+      "status": "scored",
+      "processing_width": 640,
+      "iou": 0.9004373177842565,
+      "f1": 0.9476106466211551,
+      "boundary_f1": 0.9034292694395684,
+      "leakage": 0.02484010114532203,
+      "baseline_iou": 0.0,
+      "baseline_f1": 0.0,
+      "baseline_boundary_f1": 0.0,
+      "baseline_leakage": 0.9120928157072735,
+      "components": 1,
+      "mask_pixels": 6314
+    }
+  ],
+  "summary": {
+    "expected": 3,
+    "scored": 3,
+    "hidden": 0,
+    "missing": 0,
+    "iou": {
+      "mean": 0.8971183445410912,
+      "n_scored": 3
+    },
+    "f1": {
+      "mean": 0.9456141754239434,
+      "n_scored": 3
+    },
+    "boundary_f1": {
+      "mean": 0.6940588576980217,
+      "n_scored": 3
+    },
+    "leakage": {
+      "mean": 0.013626402560925432,
+      "n_scored": 3
+    },
+    "baseline_iou": {
+      "mean": 0.0,
+      "n_scored": 3
+    },
+    "baseline_f1": {
+      "mean": 0.0,
+      "n_scored": 3
+    },
+    "baseline_boundary_f1": {
+      "mean": 0.0,
+      "n_scored": 3
+    },
+    "baseline_leakage": {
+      "mean": 0.9262584901539568,
+      "n_scored": 3
+    }
+  },
+  "frozen_occlusion": {
+    "mode": "difference",
+    "strong": 0.25,
+    "weak": 0.12,
+    "min_area": 38,
+    "open_radius": 2,
+    "connectivity": 8,
+    "gain_quantile": 0.5,
+    "feather": 3
+  }
+}

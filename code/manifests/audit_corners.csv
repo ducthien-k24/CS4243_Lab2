@@ -1,0 +1,11 @@
+clip_id,frame,frame_path,annotator,x1,y1,x2,y2,x3,y3,x4,y4,annotated_before_inference
+poster_01,0,../../data/personal/poster_01/frames/frame_000000.png,Hoang Bach,270.000,26.000,588.000,28.000,580.000,445.000,295.000,462.000,yes
+poster_01,30,../../data/personal/poster_01/frames/frame_000030.png,Hoang Bach,269.000,25.000,588.000,33.000,576.000,450.000,291.000,460.000,yes
+poster_01,45,../../data/personal/poster_01/frames/frame_000045.png,Hoang Bach,269.000,33.000,586.000,38.000,574.000,454.000,281.000,458.000,yes
+poster_01,90,../../data/personal/poster_01/frames/frame_000090.png,Hoang Bach,254.000,0.000,618.000,3.000,599.000,476.000,270.000,478.000,yes
+poster_01,145,../../data/personal/poster_01/frames/frame_000145.png,Hoang Bach,243.000,27.000,590.000,27.000,588.000,478.000,268.000,479.000,yes
+poster_01,210,../../data/personal/poster_01/frames/frame_000210.png,Hoang Bach,284.000,39.000,568.000,58.000,552.000,431.000,293.000,445.000,yes
+poster_01,240,../../data/personal/poster_01/frames/frame_000240.png,Hoang Bach,279.000,21.000,561.000,53.000,536.000,414.000,281.000,432.000,yes
+poster_01,360,../../data/personal/poster_01/frames/frame_000360.png,Hoang Bach,305.000,0.000,622.000,32.000,583.000,437.000,305.000,453.000,yes
+poster_01,390,../../data/personal/poster_01/frames/frame_000390.png,Hoang Bach,270.000,49.000,571.000,19.000,577.000,432.000,312.000,437.000,yes
+poster_01,398,../../data/personal/poster_01/frames/frame_000398.png,Hoang Bach,262.000,46.000,568.000,1.000,583.000,440.000,307.000,439.000,yes

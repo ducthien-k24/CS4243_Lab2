@@ -1,0 +1,6 @@
+clip_id,frame,frame_path,mask_path,annotator,occluder,annotated_before_inference
+poster_01,0,../../data/personal/poster_01/frames/frame_000000.png,../../data/personal/poster_01/masks/mask_000000.png,Hoang Bach,none,yes
+poster_01,30,../../data/personal/poster_01/frames/frame_000030.png,../../data/personal/poster_01/masks/mask_000030.png,Hoang Bach,light turquoise plastic folder,yes
+poster_01,45,../../data/personal/poster_01/frames/frame_000045.png,../../data/personal/poster_01/masks/mask_000045.png,Hoang Bach,light turquoise plastic folder,yes
+poster_01,145,../../data/personal/poster_01/frames/frame_000145.png,../../data/personal/poster_01/masks/mask_000145.png,Hoang Bach,light turquoise plastic folder,yes
+poster_01,398,../../data/personal/poster_01/frames/frame_000398.png,../../data/personal/poster_01/masks/mask_000398.png,Hoang Bach,none,yes

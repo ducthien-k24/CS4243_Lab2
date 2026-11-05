@@ -1,0 +1,64 @@
+{
+  "clip_id": "poster_01",
+  "annotator": "Hoang Bach",
+  "corner_frames": [
+    0,
+    30,
+    45,
+    90,
+    145,
+    210,
+    240,
+    360,
+    390,
+    398
+  ],
+  "mask_frames": [
+    0,
+    30,
+    45,
+    145,
+    398
+  ],
+  "comparison_frames": {
+    "clean": 0,
+    "occluded": 45,
+    "perspective": 398,
+    "pair": [
+      390,
+      391
+    ]
+  },
+  "occluder": "light turquoise plastic folder",
+  "selection_basis": "Visual inspection of the original normalised clip only, before any classical or generative output. Frame 398 is a strong perspective/roll view with the four corners at or inside the image boundary; later cropped frames are excluded. Frames 30,45,145 contain foreground. Some poster corners are occluded by the folder and require manual estimation from visible edges.",
+  "selection_author": "Codex [AI-DESIGN] [AI-VISION]",
+  "annotation_author": "Hoang Bach; 10 corner frames and 5 masks saved through the supplied GUI before inference",
+  "output_fps_pair_check": {
+    "source_fps": 30,
+    "model_fps": 16,
+    "source_pair": [
+      390,
+      391
+    ],
+    "output_pair_if_interval_starts_at_zero": [
+      208,
+      209
+    ]
+  },
+  "artwork_review": {
+    "file": "data/artwork/ad3.jpg",
+    "size": [
+      1200,
+      1600
+    ],
+    "visible_brand": false,
+    "visible_human_face": false,
+    "notes": "Generic burger advertisement with a small cartoon burger face at the top; no visible named third-party brand or human face. Converted to PNG with black letterboxing at exact board aspect ratio; no cropping, stretching or content edits.",
+    "prepared_file": "data/artwork/ad3.png",
+    "prepared_size": [
+      960,
+      1362
+    ]
+  },
+  "audit_annotations_completed": true
+}
