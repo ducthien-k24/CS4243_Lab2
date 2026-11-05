@@ -1,17 +1,17 @@
 {
   "mode": "personal_clip_frames",
-  "clip_id": "poster_01",
-  "artwork": "../../data/artwork/ad3.png",
-  "reference": "../../data/personal/poster_01/reference.png",
+  "clip_id": "poster_03",
+  "artwork": "../../data/artwork/ad4.png",
+  "reference": "../../data/personal/poster_03/reference.png",
   "frames": {
     "clean": 0,
     "occluded": 45,
-    "perspective": 398,
+    "perspective": 240,
     "pair": [
       390,
       391
     ],
-    "note": "Selected by visual inspection of the normalised source clip before any method ran. Source indices are unchanged: 0-449 at 30 fps. Corner audit frames: 0,30,45,90,145,210,240,360,390,398. Mask audit frames: 0,30,45,145,398. Annotator: Hoang Bach. Frame 398 is the selected strong-perspective/roll view near the image boundary. Use the same full audit dictionary for every method. [AI-DESIGN] [HUMAN-DATA]"
+    "note": "Preselected from the retimed 15-second source before either method ran. Corner audit frames: 0,45,75,150,195,240,300,390,420,449. Mask audit frames: 0,45,195,240,449. Hoang Bach manually completed all 10 corner frames and 5 masks (3 nonempty) in the supplied GUI. Use the same full audit dictionary for every method. Source indices 0-449 refer to the prepared clip, not the original camera timeline. [AI-DESIGN] [HUMAN-DATA]"
   },
   "model": {
     "requirement": "One open-weight video model generates the edited pixels directly. Inference scripts are permitted. One attempt, fixed settings/seed across duration-limited segments; log every segment and technical retry.",
@@ -47,7 +47,7 @@
       "planned_total_inference_frames": 243,
       "discard_tail_frames_per_segment": 1
     },
-    "notes": "A100 40-GB memory-conscious plan, not GPU-benchmarked: three contiguous 5-second source intervals, source frames 0-149,150-299,300-449. Each uses the same official checkpoint revision, short prompt, seed 2026, 832x480, 16 fps, 50 steps, guidance 5, conditioning 1, UniPC flow shift 3, BF16 with VAE FP32, VAE tiling and sequential CPU offload. Each raw output has 81 frames; preserve it unchanged and retain only indices 0-79 for the final concatenation. The predeclared last padding frame is excluded, giving exactly 240 frames at 16 fps (15 seconds), without retiming, crossfades, geometric correction or classical background compositing. Temporal pair 390-391 stays inside the last segment and maps to joined indices 208-209. Record every segment and unchanged-settings technical retry in genai_log.csv. No generation has run.",
+    "notes": "A100 40-GB memory-conscious plan, not GPU-benchmarked: three contiguous 5-second source intervals, source frames 0-149,150-299,300-449. Each uses the same official checkpoint revision, short prompt, seed 2026, 832x480, 16 fps, 50 steps, guidance 5, conditioning 1, UniPC flow shift 3, BF16 with VAE FP32, VAE tiling and sequential CPU offload. Each raw output has 81 frames; preserve it unchanged and retain only indices 0-79 for the final concatenation. The predeclared last padding frame is excluded, giving exactly 240 frames at 16 fps (15 seconds), without retiming, crossfades, geometric correction or classical background compositing. Temporal pair 390-391 stays inside the third segment and maps to joined indices 208-209. Record every segment and unchanged-settings technical retry in genai_log.csv. Replacement capture poster_03 is configured before its local method runs; no inference was performed in this setup. Preserve logs of any prior capture attempts on other machines. The entire 16.566667-second camera source was uniformly accelerated 1.1044444444444443x to 15 seconds before audit annotation; no camera-time interval was cut. All evaluation and model intervals use this prepared timeline. No further retiming is applied to method outputs.",
     "segments": [
       {
         "start": 0,
@@ -71,13 +71,13 @@
   },
   "prompt": {
     "inputs": [
-      "data/personal/poster_01/clip.mp4 (full normalised source clip)",
-      "data/artwork/ad3.png (artwork reference)",
-      "outputs/genai/inputs/masks/mask_XXXXXX.png (board masks exported from the frozen classical pipeline by Notebook 4; not audit foreground masks)"
+      "data/personal/poster_03/clip.mp4 (full normalised source clip)",
+      "data/artwork/ad4.png (artwork reference)",
+      "outputs/genai/inputs/masks/mask_XXXXXX.png (fresh poster_03 board masks exported by Notebook 4 from the frozen classical pipeline; not audit foreground masks)"
     ],
     "template": "Replace the advertisement on the board in this video with the attached artwork."
   },
-  "evaluation": "python -m overlaylab.evaluate --frames outputs/genai/frame_*.png --clip poster_01 --artwork ad3",
+  "evaluation": "python -m overlaylab.evaluate --frames outputs/genai/frame_*.png --clip poster_03 --artwork ad4",
   "declaration": "model name and visible version, date, settings (steps, resolution, seed), the video you gave it (whole clip, cut, or joined segments), output fps, prompt, time, compute",
   "log_fields": [
     "date",
