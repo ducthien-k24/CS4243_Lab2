@@ -1,5 +1,10 @@
 # VACE-14B cho Stage 4 trên NUS cluster
 
+**Active A100 40-GB profile:** use [A100_40GB.md](A100_40GB.md) and
+`segmented_infer.py`: 3 x 5 s, 832x480, 81 raw frames per segment,
+sequential CPU offload, final 240 frames at 16 fps. This supersedes the
+original 720p/241-frame single-call plan. No GPU benchmark has been run.
+
 Bộ script dùng **`Wan-AI/Wan2.1-VACE-14B-diffusers`**, nhận video gốc,
 artwork, board masks, seed và output path. Model sinh toàn bộ frame đầu ra;
 script lưu nguyên kết quả, không ghép lại background bằng classical compositing.
@@ -92,12 +97,11 @@ và mask luôn lấy cùng source index. RGB resize trực tiếp về width/hei
 mask resize nearest neighbour. Không crop source hoặc đổi annotation. Artwork
 là reference image riêng, không được warp trước lên board.
 
-Số frame model phải là **4n+1**. Mặc định **81**, tương đương 5.0625 giây
-output. Script tính số frame hợp lệ nhỏ nhất đủ phủ cut và báo lỗi nếu
-`--num-frames` không khớp; không âm thầm cắt clip hoặc retime thành 81 frame.
-Ví dụ 150 source frames @30 fps dùng 81 model frames; 165 frames @30 fps dùng
-**89**. Đuôi ngắn được pad bằng frame cuối để thỏa VAE và ghi rõ trong mapping.
-Clip dài hơn có thể cần nhiều VRAM/thời gian hơn.
+The active plan divides the source into frames 0-149, 150-299 and 300-449.
+Each model call emits 81 frames (4n+1); all raw frames are retained.
+The joined output keeps the first 80 frames per segment, excluding only
+the predeclared last padding frame. Final length is exactly 240/16 = 15 s.
+See A100_40GB.md for the timestamp proof and unchanged audit mapping.
 
 Các source frames đã chọn phải map sang các output frames phân biệt:
 
@@ -122,7 +126,7 @@ export VACE_ARTWORK="$LAB_ROOT/data/artwork/my_artwork.png"
 export VACE_MASKS="$LAB_ROOT/code/outputs/genai/inputs/masks"
 export VACE_SEED=2026
 
-"$VACE_ENV/bin/python" student_files/vace/infer.py preflight \
+"$VACE_ENV/bin/python" student_files/vace/segmented_infer.py preflight \
   --video "$VACE_VIDEO" --artwork "$VACE_ARTWORK" --masks "$VACE_MASKS" \
   --weights "$VACE_WEIGHTS" --seed "$VACE_SEED" \
   --output outputs/genai/output.mp4 --num-frames 81
@@ -132,10 +136,10 @@ Thay `my_clip`, `my_artwork` bằng dữ liệu thật. Preflight chỉ đọc i
 metadata và declarations; **không import torch, load model hoặc generation**.
 
 Khi đã có GPU allocation, dùng cùng arguments và đổi `preflight` thành `run`.
-Mặc định: 1280x720, 16 fps, 50 steps, guidance 5, conditioning scale 1,
-UniPC flow shift 5, BF16 + VAE FP32, VAE tiling và model CPU offload. Muốn bỏ
-CPU offload dùng `--offload none`, chọn trước attempt. Không tự đổi settings
-khi OOM. Seed cố định giúp tái lập, không bảo đảm bitwise giống nhau giữa
+Active defaults: 832x480, 16 fps, 81 raw frames for each of three segments,
+50 steps, guidance 5, conditioning scale 1, UniPC flow shift 3, BF16 with
+FP32 VAE, VAE tiling and sequential CPU offload. Do not change settings
+between segments or automatically fall back after an OOM. Seed cố định giúp tái lập, không bảo đảm bitwise giống nhau giữa
 GPU/library stacks khác nhau. [AI-CODE]
 
 Hoặc submit mẫu Slurm từ thư mục này để console log nằm trong student_files:
@@ -151,27 +155,16 @@ của scheduler đó. Không chạy inference trên login node hoặc gọi bằ
 
 ## 6. Artefacts và log
 
-Script tạo:
+The segmented driver writes `outputs/genai/output.mp4` and retains each
+81-frame raw result under `outputs/genai/segmented_attempt/segment_00/`
+(also 01 and 02), with input snapshots, invocation logs and hashes.
+`manifests/genai_log.csv` contains one row per segment/invocation.
+The parent attempt manifest records the exact joining rule and status.
 
-- `outputs/genai/output.mp4`: bản sao byte-for-byte của raw generation;
-- `outputs/genai/runs/<id>/raw_output.mp4`: giữ nguyên output model;
-- `runs/<id>/invocation.json`, `pip_freeze.txt`, `error.txt` nếu lỗi;
-- `outputs/genai/inputs/vace/<id>/`: input PNGs thực tế, binary masks,
-  artwork, conditions snapshot và `plan.json` chứa mapping/hashes;
-- `manifests/genai_log.csv`: một row mỗi invocation, trạng thái running,
-  complete hoặc failed; model SHA, settings, seed, prompt, FPS, compute, time.
-
-`processing_time_s` gồm preparation/load/inference/export; inference-only time
-nằm trong notes/manifest. Script không ghi tokens/API keys vào provenance.
-Output có sẵn không bị ghi đè. CSV được ghi trước model loading; không tự
-retry hoặc chọn kết quả tốt nhất. Chỉ retry lỗi kỹ thuật với cùng inputs,
-model/settings/seed và thêm `--retry-note "<lý do và invocation cũ>"`.
-Không đổi output path để thử seed/prompt khác hoặc cherry-pick kết quả.
-
-Job bị SIGKILL có thể để lại row `running` và `.vace.lock` cạnh file CSV.
-Chỉ xóa lock sau khi xác nhận job cũ đã dừng; giữ raw/log cũ và ghi retry note.
-Recipe hỗ trợ **một cut/một invocation**, chưa tự chia/ghép segments. Nếu cần
-segments, thiết kế thêm mapping, log và ghép source-order trước khi generation.
+Use `segmented_infer.py run ... --resume` for an unchanged-settings
+technical restart; completed segments are verified and never regenerated.
+No automatic retry, seed search, overlap blending or background paste is
+performed. See A100_40GB.md for output layout and stale-lock recovery.
 
 Sau generation, tiếp tục Notebook 4 từ cell extract audit frames. Giữ nguyên
 conditions so với snapshot. Notebook 4 resize audit extracts về source size

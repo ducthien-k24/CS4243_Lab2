@@ -21,8 +21,9 @@ cd "$LAB_ROOT/code"
 export HF_HUB_OFFLINE=1
 export TRANSFORMERS_OFFLINE=1
 export TOKENIZERS_PARALLELISM=false
+export PYTORCH_CUDA_ALLOC_CONF=expandable_segments:True
 export OMP_NUM_THREADS="${SLURM_CPUS_PER_TASK:-8}"
-exec "$VACE_ENV/bin/python" student_files/vace/infer.py run \
+exec "$VACE_ENV/bin/python" student_files/vace/segmented_infer.py run \
     --weights "$VACE_WEIGHTS" \
     --video "$VACE_VIDEO" \
     --artwork "$VACE_ARTWORK" \

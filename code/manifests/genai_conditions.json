@@ -28,21 +28,46 @@
     "visible_version": null,
     "settings": {
       "status": "planned_not_run",
-      "num_frames": 241,
-      "width": 1280,
-      "height": 720,
+      "num_frames": 81,
+      "width": 832,
+      "height": 480,
       "num_inference_steps": 50,
       "guidance_scale": 5.0,
       "conditioning_scale": 1.0,
       "scheduler": "UniPCMultistepScheduler",
-      "flow_shift": 5.0,
+      "flow_shift": 3.0,
       "precision": "bfloat16; VAE float32",
-      "cpu_offload": "model",
+      "cpu_offload": "sequential",
       "vae_tiling": true,
       "negative_prompt": "",
-      "prompt_extension": false
+      "prompt_extension": false,
+      "execution_mode": "segmented",
+      "num_frames_per_segment": 81,
+      "joined_frames": 240,
+      "planned_total_inference_frames": 243,
+      "discard_tail_frames_per_segment": 1
     },
-    "notes": "Planned configuration only; no generative invocation has occurred. Downloaded checkpoint SHA/version, compute and measured runtime will be recorded by the inference script in manifests/genai_log.csv. The full 15-second clip requires --num-frames 241 at 16 fps; the script default of 81 is insufficient. If resource constraints require segmentation, define and log a source-order segmentation plan before the first attempt; do not change the chosen frames or seek more favourable outputs."
+    "notes": "A100 40-GB memory-conscious plan, not GPU-benchmarked: three contiguous 5-second source intervals, source frames 0-149,150-299,300-449. Each uses the same official checkpoint revision, short prompt, seed 2026, 832x480, 16 fps, 50 steps, guidance 5, conditioning 1, UniPC flow shift 3, BF16 with VAE FP32, VAE tiling and sequential CPU offload. Each raw output has 81 frames; preserve it unchanged and retain only indices 0-79 for the final concatenation. The predeclared last padding frame is excluded, giving exactly 240 frames at 16 fps (15 seconds), without retiming, crossfades, geometric correction or classical background compositing. Temporal pair 390-391 stays inside the last segment and maps to joined indices 208-209. Record every segment and unchanged-settings technical retry in genai_log.csv. No generation has run.",
+    "segments": [
+      {
+        "start": 0,
+        "end": 149,
+        "num_frames": 81,
+        "keep_frames": 80
+      },
+      {
+        "start": 150,
+        "end": 299,
+        "num_frames": 81,
+        "keep_frames": 80
+      },
+      {
+        "start": 300,
+        "end": 449,
+        "num_frames": 81,
+        "keep_frames": 80
+      }
+    ]
   },
   "prompt": {
     "inputs": [

@@ -47,19 +47,19 @@ input-export cell to produce the frozen-pipeline board masks for VACE.
 clean=0, occluded=45, perspective=398, temporal pair=390,391. These selected
 indices are unchanged from the pre-annotation source-inspection plan.
 
-The declared source interval is the full 0-449 range. At 16 fps, its minimum
-4n+1 model length is **241 frames**, not the runner's default 81. Use
-`--num-frames 241` explicitly in both preflight and inference commands.
-Source frames 390 and 391 map to distinct output indices 208 and 209.
-The declaration is planned only: checkpoint SHA/version, measured runtime,
-hardware and generation status are not fabricated. No genai_log invocation
-has been created because generation has not run. [AI-DESIGN]
+The declared source interval is still the full 0-449 range. The active
+A100 40-GB profile now uses three consecutive 5-second segments, source
+0-149, 150-299, 300-449, at 832x480 with sequential CPU offload. Each raw
+model output is 81 frames; preserve all raw outputs, and keep only indices
+0-79 of each in the joined video. This excludes predeclared VAE padding,
+giving exactly 240 frames at 16 fps (15 seconds), without accumulated seam
+retiming. All three segments keep the same model/settings/seed 2026.
 
-Full-clip 720p generation at 241 frames may require substantially more memory
-and time than the usual 81-frame examples. Check the cluster allocation
-before the official attempt. Do not silently truncate to 81 frames or select
-new comparison frames after looking at generated outputs. Any segmentation
-scheme must be designed and logged before generation, with the same settings
-and seed, and the temporal pair kept within one segment.
+Use `student_files/vace/segmented_infer.py`, not the old 241-frame command.
+Full cluster commands, verification and technical resume behaviour are in
+`student_files/vace/A100_40GB.md`. These settings have not been GPU-benchmarked.
+Source frames 390 and 391 remain together in segment 3 and map to joined
+output indices 208 and 209. Notebook 4's extraction formula is unchanged.
+No generative invocation has been performed by this preparation.
 
 `stage4_setup.json` preserves artwork conversion details and SHA256 hashes.

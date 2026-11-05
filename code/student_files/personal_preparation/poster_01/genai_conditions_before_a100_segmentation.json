@@ -1,0 +1,74 @@
+{
+  "mode": "personal_clip_frames",
+  "clip_id": "poster_01",
+  "artwork": "../../data/artwork/ad3.png",
+  "reference": "../../data/personal/poster_01/reference.png",
+  "frames": {
+    "clean": 0,
+    "occluded": 45,
+    "perspective": 398,
+    "pair": [
+      390,
+      391
+    ],
+    "note": "Selected by visual inspection of the normalised source clip before any method ran. Source indices are unchanged: 0-449 at 30 fps. Corner audit frames: 0,30,45,90,145,210,240,360,390,398. Mask audit frames: 0,30,45,145,398. Annotator: Hoang Bach. Frame 398 is the selected strong-perspective/roll view near the image boundary. Use the same full audit dictionary for every method. [AI-DESIGN] [HUMAN-DATA]"
+  },
+  "model": {
+    "requirement": "One open-weight video model generates the edited pixels directly. Inference scripts are permitted. One attempt, fixed settings/seed across duration-limited segments; log every segment and technical retry.",
+    "examples": "Use an open-weight video model your hardware supports, for example MiniMax-H3 (MiniMax, 2026, https://huggingface.co/MiniMaxAI/MiniMax-H3), JoyAI-Video-Edit (JD Open Source, 2026, https://github.com/jd-opensource/JoyAI-Video-Edit), LTX-2.3 (Lightricks, 2026, in/outpainting IC-LoRA) or Wan2.1-VACE-14B (Wan, arXiv:2503.20314; VACE, Jiang et al., arXiv:2503.07598); other open-weight models are equally welcome. Wan2.1-VACE-1.3B (Apache 2.0) is a smaller option; memory depends on settings (staff trial: 14 GB, 13 min for a 5.5 s cut at 480p, mask + reference image). The staff example with MiniMax-H3 is in data/genai_oracle/.",
+    "name": "Wan-AI/Wan2.1-VACE-14B-diffusers",
+    "interval": {
+      "start": 0,
+      "end": 449,
+      "note": "The entire normalised personal clip, inclusive source frames 0-449 (15 seconds at 30 fps). Inputs must use the original source indices. All preselected comparison frames are covered; no source video or audit annotation is modified."
+    },
+    "output_fps": 16,
+    "output": "outputs/genai/output.mp4; outputs/genai/frame_XXXXXX.png (source-indexed audit extracts)",
+    "seed": 2026,
+    "visible_version": null,
+    "settings": {
+      "status": "planned_not_run",
+      "num_frames": 241,
+      "width": 1280,
+      "height": 720,
+      "num_inference_steps": 50,
+      "guidance_scale": 5.0,
+      "conditioning_scale": 1.0,
+      "scheduler": "UniPCMultistepScheduler",
+      "flow_shift": 5.0,
+      "precision": "bfloat16; VAE float32",
+      "cpu_offload": "model",
+      "vae_tiling": true,
+      "negative_prompt": "",
+      "prompt_extension": false
+    },
+    "notes": "Planned configuration only; no generative invocation has occurred. Downloaded checkpoint SHA/version, compute and measured runtime will be recorded by the inference script in manifests/genai_log.csv. The full 15-second clip requires --num-frames 241 at 16 fps; the script default of 81 is insufficient. If resource constraints require segmentation, define and log a source-order segmentation plan before the first attempt; do not change the chosen frames or seek more favourable outputs."
+  },
+  "prompt": {
+    "inputs": [
+      "data/personal/poster_01/clip.mp4 (full normalised source clip)",
+      "data/artwork/ad3.png (artwork reference)",
+      "outputs/genai/inputs/masks/mask_XXXXXX.png (board masks exported from the frozen classical pipeline by Notebook 4; not audit foreground masks)"
+    ],
+    "template": "Replace the advertisement on the board in this video with the attached artwork."
+  },
+  "evaluation": "python -m overlaylab.evaluate --frames outputs/genai/frame_*.png --clip poster_01 --artwork ad3",
+  "declaration": "model name and visible version, date, settings (steps, resolution, seed), the video you gave it (whole clip, cut, or joined segments), output fps, prompt, time, compute",
+  "log_fields": [
+    "date",
+    "model",
+    "visible_version",
+    "settings",
+    "seed",
+    "interval",
+    "output_fps",
+    "prompt",
+    "inputs",
+    "input_resolution",
+    "output_resolution",
+    "processing_time_s",
+    "compute",
+    "output_path",
+    "notes"
+  ]
+}

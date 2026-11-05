@@ -22,6 +22,8 @@ import time
 import traceback
 import uuid
 
+from segment_timing import validate_segments, audit_mapping
+
 CODE = Path(__file__).resolve().parents[2]
 MODEL = "Wan-AI/Wan2.1-VACE-14B-diffusers"
 PROMPT = "Replace the advertisement on the board in this video with the attached artwork."
@@ -38,8 +40,17 @@ def digest(path):
 
 
 def save_json(path, obj):
-    Path(path).parent.mkdir(parents=True, exist_ok=True)
-    Path(path).write_text(json.dumps(obj, indent=2, ensure_ascii=False), encoding="utf-8")
+    path = Path(path)
+    path.parent.mkdir(parents=True, exist_ok=True)
+    temporary = path.with_name(path.name + "." + uuid.uuid4().hex + ".tmp")
+    try:
+        with temporary.open("x", encoding="utf-8") as stream:
+            json.dump(obj, stream, indent=2, ensure_ascii=False)
+            stream.flush()
+            os.fsync(stream.fileno())
+        temporary.replace(path)
+    finally:
+        temporary.unlink(missing_ok=True)
 
 
 def probe(path):
@@ -93,13 +104,13 @@ def check_audit(conditions, chosen):
     return {"corners_sha256": digest(corners_path), "masks_sha256": digest(masks_path)}
 
 
-def make_plan(args):
+def make_plan(args, *, allow_existing_output=False):
     if not shutil.which("ffprobe"):
         raise RuntimeError("Load/install ffmpeg including ffprobe on the cluster")
-    if args.output.exists():
+    if args.output.exists() and not allow_existing_output:
         raise FileExistsError(f"Refusing to overwrite existing output: {args.output}")
     if (args.seed < 0 or args.steps < 1
-            or not all(math.isfinite(v) and v >= 0 for v in (args.guidance, args.conditioning_scale))):
+            or not all(math.isfinite(v) and v >= 0 for v in (args.guidance, args.conditioning_scale, args.flow_shift))):
         raise ValueError("Use a nonnegative seed/scales and positive steps")
     if args.width <= 0 or args.height <= 0 or args.width % 16 or args.height % 16:
         raise ValueError("Explicit model width and height must be positive multiples of 16")
@@ -130,6 +141,14 @@ def make_plan(args):
         raise ValueError(f"Set model.name in genai_conditions.json to {MODEL}")
     if cond["prompt"]["template"] != PROMPT:
         raise ValueError("Use the short lab prompt; this recipe does not extend it")
+    declared = cond["model"].get("settings", {})
+    for key, value in {"width": args.width, "height": args.height, "num_frames": args.num_frames,
+                       "num_inference_steps": args.steps, "guidance_scale": args.guidance,
+                       "conditioning_scale": args.conditioning_scale, "flow_shift": args.flow_shift,
+                       "cpu_offload": args.offload}.items():
+        if key in declared and declared[key] != value:
+            raise ValueError(f"{key}={value} disagrees with predeclared conditions ({declared[key]}); "
+                             "use the segmented runner or correct settings BEFORE the first attempt")
     expected_artwork = (CODE / "notebooks" / cond["artwork"]).resolve()
     expected_video = (CODE.parent / "data" / "personal" / cond["clip_id"] / "clip.mp4").resolve()
     if args.artwork.resolve() != expected_artwork or args.video.resolve() != expected_video:
@@ -157,13 +176,26 @@ def make_plan(args):
     mapped = {f: round((f - start) * args.fps / info["fps"]) for f in set(chosen)}
     if len(set(mapped.values())) != len(mapped):
         raise ValueError("Selected source frames collide at 16 fps; choose a valid pair BEFORE generation")
+    full_interval = {"start": start, "end": end}
+    segment = None
+    if declared.get("execution_mode") == "segmented":
+        segments = validate_segments(cond["model"]["segments"], start, end, info["fps"], args.fps)
+        audit_mapping(segments, set(chosen), info["fps"], args.fps, pair)
+        if args.segment_index is None or not 0 <= args.segment_index < len(segments):
+            raise ValueError("Use segmented_infer.py to run the complete predeclared segmented attempt")
+        segment = segments[args.segment_index]
+        start, end = segment["start"], segment["end"]
+        mapped = {f: round((f - start) * args.fps / info["fps"])
+                  for f in set(chosen) if start <= f <= end}
+    elif args.segment_index is not None:
+        raise ValueError("--segment-index requires predeclared segmented conditions")
     duration = (end - start + 1) / info["fps"]
     # Only minimal tail padding to satisfy VAE's 4n+1 constraint is permitted.
     minimum = math.ceil(max(0, duration * args.fps - 1) / 4) * 4 + 1
     if args.num_frames != minimum:
         raise ValueError(f"This interval needs --num-frames {minimum} at 16 fps. "
                          "Choose a cut in conditions or explicitly use that frame count; no silent truncation.")
-    if max(mapped.values()) >= args.num_frames:
+    if mapped and max(mapped.values()) >= args.num_frames:
         raise ValueError("Selected frame is outside generated timestamps")
     mapping = [{"model_frame": k, "source_frame": min(end, start + round(k * info["fps"] / args.fps)),
                 "nominal_source_time_seconds": start / info["fps"] + k / args.fps,
@@ -183,10 +215,11 @@ def make_plan(args):
                 raise ValueError(f"Mask {mask_path} must match the original video dimensions")
     return {"model": MODEL, "revision": snapshot["revision"], "clip_id": cond["clip_id"],
             "prompt": PROMPT, "negative_prompt": "", "seed": args.seed,
-            "interval": {"start": start, "end": end}, "source": info,
+            "interval": {"start": start, "end": end}, "full_interval": full_interval,
+            "segment": segment, "source": info,
             "width": args.width, "height": args.height, "fps": args.fps,
             "num_frames": args.num_frames, "steps": args.steps, "guidance": args.guidance,
-            "conditioning_scale": args.conditioning_scale, "flow_shift": 5.0,
+            "conditioning_scale": args.conditioning_scale, "flow_shift": args.flow_shift,
             "offload": args.offload, "precision": "bfloat16; VAE float32", "audit": audit,
             "audit_output_frames": mapped, "frame_mapping": mapping,
             "video_sha256": digest(args.video), "artwork_sha256": digest(args.artwork),
@@ -308,6 +341,7 @@ def _run_invocation(args, plan):
         (raw_dir / "pip_freeze.txt").write_text(packages, encoding="utf-8")
         torch.backends.cuda.matmul.allow_tf32 = False
         torch.backends.cudnn.allow_tf32 = False
+        torch.cuda.reset_peak_memory_stats()
         vae = AutoencoderKLWan.from_pretrained(
             str(args.weights), subfolder="vae", torch_dtype=torch.float32, local_files_only=True)
         pipe = WanVACEPipeline.from_pretrained(
@@ -316,6 +350,10 @@ def _run_invocation(args, plan):
         pipe.vae.enable_tiling()
         if args.offload == "model":
             pipe.enable_model_cpu_offload()
+        elif args.offload == "sequential":
+            # Offload submodules instead of placing the entire 14B transformer
+            # on the 40-GB GPU. Slower, but leaves more room for activations.
+            pipe.enable_sequential_cpu_offload()
         else:
             pipe.to("cuda")
         torch.cuda.synchronize()
@@ -328,6 +366,8 @@ def _run_invocation(args, plan):
                              generator=torch.Generator(device="cpu").manual_seed(args.seed)).frames[0]
         torch.cuda.synchronize()
         plan["inference_seconds"] = time.perf_counter() - inference_start
+        plan["peak_vram_allocated_gib"] = torch.cuda.max_memory_allocated() / 2**30
+        plan["peak_vram_reserved_gib"] = torch.cuda.max_memory_reserved() / 2**30
         if generated.shape != (args.num_frames, args.height, args.width, 3):
             np.save(raw_dir / "unexpected_output.npy", generated)
             raise RuntimeError(f"Unexpected generated video shape: {generated.shape}")
@@ -355,9 +395,11 @@ def _run_invocation(args, plan):
         row["notes"] = json.dumps({"invocation_id": invocation_id, "status": status,
                                    "marker": "[AI-GENERATION]", "error": error,
                                    "inference_seconds": plan.get("inference_seconds"),
+                                   "peak_vram_allocated_gib": plan.get("peak_vram_allocated_gib"),
+                                   "peak_vram_reserved_gib": plan.get("peak_vram_reserved_gib"),
                                    "raw_output": str(raw_dir / "raw_output.mp4"),
                                    "technical_retry_note": args.retry_note})
-        save_json(raw_dir / "invocation.json", {"status": status, "error": error, "plan": plan})
+        save_json(raw_dir / "invocation.json", {"status": status, "error": error, "plan": plan, "log_row": row})
         update_log(args.log, invocation_id, row)
 
 
@@ -376,7 +418,7 @@ def run(args, plan):
         lock.unlink(missing_ok=True)
 
 
-def main():
+def build_parser():
     parser = argparse.ArgumentParser(description=__doc__)
     parser.add_argument("action", choices=("preflight", "run"))
     for name in ("video", "artwork", "masks", "weights", "output"):
@@ -391,9 +433,16 @@ def main():
     parser.add_argument("--steps", type=int, default=50)
     parser.add_argument("--guidance", type=float, default=5.0)
     parser.add_argument("--conditioning-scale", type=float, default=1.0)
-    parser.add_argument("--offload", choices=("model", "none"), default="model")
+    parser.add_argument("--offload", choices=("model", "sequential", "none"), default="model")
+    parser.add_argument("--flow-shift", type=float, default=5.0)
+    parser.add_argument("--segment-index", type=int, default=None,
+                        help="Internal segment index; normally use segmented_infer.py")
     parser.add_argument("--retry-note", default="", help="Describe unchanged-settings technical retry, if applicable")
-    args = parser.parse_args()
+    return parser
+
+
+def main():
+    args = build_parser().parse_args()
     plan = make_plan(args)
     print(json.dumps(plan, indent=2))
     if args.action == "preflight":
