@@ -1,0 +1,71 @@
+{
+  "clip_id": "poster_03",
+  "annotator": "Hoang Bach",
+  "corner_frames": [
+    0,
+    45,
+    75,
+    150,
+    195,
+    240,
+    300,
+    390,
+    420,
+    449
+  ],
+  "mask_frames": [
+    0,
+    45,
+    195,
+    240,
+    449
+  ],
+  "empty_mask_frames": [
+    0,
+    240
+  ],
+  "nonempty_mask_frames": [
+    45,
+    195,
+    449
+  ],
+  "comparison_frames": {
+    "clean": 0,
+    "occluded": 45,
+    "perspective": 240,
+    "pair": [
+      390,
+      391
+    ]
+  },
+  "occluder": "black rectangular zippered case (visual description; exact object type unconfirmed)",
+  "source_video_sha256": "717bffb27c0c7d9022cefdc4e828d4b6311d554e49637f86fde78ddc5e9022b8",
+  "source_indices": {
+    "first": 0,
+    "last": 449,
+    "fps": 30
+  },
+  "selection_basis": "Visual inspection of the new normalised source only, before either method runs. Samples span the beginning and end, camera pan/roll, viewpoint and distance changes, and three real foreground crossings. Clear audit frames have all four poster corners in the image; the late frame 420 in this new clip is distinct from the cropped frame 420 in poster_02. Frames 45,195,449 have corners hidden by the foreground case that require manual estimation from visible poster edges and adjacent source frames. Preview images are selection aids, not audit labels. All timings refer to the already retimed 15-second clip, not the camera source.",
+  "selection_author": "Codex [AI-DESIGN] [AI-VISION]",
+  "annotation_author": "Hoang Bach; all 10 corner frames and 5 masks saved through the supplied GUI before local inference",
+  "output_fps_pair_check": {
+    "source_fps": 30,
+    "model_fps": 16,
+    "source_pair": [
+      390,
+      391
+    ],
+    "output_pair_if_interval_starts_at_zero": [
+      208,
+      209
+    ],
+    "source_segment_inclusive": [
+      300,
+      449
+    ]
+  },
+  "artwork": "data/artwork/ad4.png",
+  "audit_annotations_completed": true,
+  "pipeline_or_model_run_on_this_clip": false,
+  "annotation_checked_at_utc": "2026-11-05T12:03:12.277910+00:00"
+}

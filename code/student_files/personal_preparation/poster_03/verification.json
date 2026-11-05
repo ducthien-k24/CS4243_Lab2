@@ -1,0 +1,19 @@
+{
+  "decoded_source_frames": 496,
+  "decoded_output_frames": 450,
+  "extracted_frames": 450,
+  "width": 1280,
+  "height": 720,
+  "fps": 30,
+  "duration_seconds": 15,
+  "maximum_timestamp_error_seconds": 1.7763568394002505e-15,
+  "first_frame_rmse_vs_decoded_source_first": 1.2847380638122559,
+  "last_frame_rmse_vs_decoded_source_last": 2.231703758239746,
+  "audio_present": false,
+  "capture_time_or_location_metadata_present": false,
+  "reference_identical_to_previous_rectification": true,
+  "ad4_aspect_matches_reference": true,
+  "audit_annotations_created": false,
+  "inference_run": false,
+  "retiming_stage": "Applied to the full source before annotation; all later audit, classical and generative timestamps must use this normalised clip."
+}

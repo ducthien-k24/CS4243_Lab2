@@ -1,0 +1,39 @@
+{
+  "clip_id": "poster_03",
+  "checked_at_utc": "2026-11-05T12:03:12.277910+00:00",
+  "audit_complete": true,
+  "corner_frames": [
+    0,
+    45,
+    75,
+    150,
+    195,
+    240,
+    300,
+    390,
+    420,
+    449
+  ],
+  "mask_frames": [
+    0,
+    45,
+    195,
+    240,
+    449
+  ],
+  "mask_foreground_pixels": {
+    "0": 0,
+    "45": 60366,
+    "195": 52738,
+    "240": 0,
+    "449": 33841
+  },
+  "checker_status": "OK: annotations look complete",
+  "checker_previews_visually_reviewed": true,
+  "source_hash_matches_preparation": true,
+  "first_frame_board_fraction": 0.19015082465277777,
+  "new_coordinates_or_masks_generated_by_ai": false,
+  "active_conditions_clip_id": "poster_03",
+  "artwork": "ad4",
+  "inference_run_by_this_setup": false
+}

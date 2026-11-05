@@ -1,0 +1,117 @@
+{
+  "clip_id": "poster_03",
+  "source_video": "D:\\CVPR\\Lab2\\CS4243_Lab2\\data\\video\\new_video.mp4",
+  "source_video_sha256": "6146021f6e3912d1593f7bb0444b4f589ce0023afd31775c63c04a8e029aabe9",
+  "source_photo": "D:\\CVPR\\Lab2\\CS4243_Lab2\\data\\video\\new_reference.jpg",
+  "source_photo_sha256": "2215bc3bbb77ba7137857b705e469ef0799690980c1428ff38376e63fc967b17",
+  "source_interval_seconds": [
+    0.0,
+    16.566666666666666
+  ],
+  "source_interval_end_exclusive": true,
+  "source_duration_seconds": 16.566666666666666,
+  "preparation_mode": "whole_source_retimed",
+  "playback_speed_factor": 1.1044444444444443,
+  "retiming_note": "All source time is uniformly compressed before annotation; no selected source interval is discarded. CFR resampling may skip/repeat individual frames; up to one terminal clone handles EOF rounding.",
+  "output": {
+    "video": "D:\\CVPR\\Lab2\\CS4243_Lab2\\data\\personal\\poster_03\\clip.mp4",
+    "sha256": "717bffb27c0c7d9022cefdc4e828d4b6311d554e49637f86fde78ddc5e9022b8",
+    "width": 1280,
+    "height": 720,
+    "fps": 30.0,
+    "frames": 450,
+    "duration_seconds": 15.0
+  },
+  "reference": {
+    "source_photo_corners_TL_TR_BR_BL": [
+      [
+        49.0,
+        64.0
+      ],
+      [
+        881.0,
+        44.0
+      ],
+      [
+        880.0,
+        1194.0
+      ],
+      [
+        90.0,
+        1200.0
+      ]
+    ],
+    "corner_selection_method": "Visually inspected source-photo corners supplied explicitly; input preparation only [AI-VISION]",
+    "width": 400,
+    "height": 564,
+    "sha256": "8285c62c45bb9e8ff97480d4b88a96e86429679e12851650cda14ee46d57c424",
+    "homography_photo_to_reference": [
+      [
+        0.4838473527006904,
+        -0.01746280058162692,
+        -22.590901045109756
+      ],
+      [
+        0.011277371735797265,
+        0.46913866420916056,
+        -30.577465724440245
+      ],
+      [
+        1.3361795869674281e-05,
+        -4.480927681163726e-05,
+        1.0
+      ]
+    ],
+    "aspect_note": "Estimated from the near-frontal photo edges; physical board dimensions unknown",
+    "scale_note": "400 px approximates the board width visible near the start of the video"
+  },
+  "ffmpeg_command": [
+    "D:\\CVPR\\Lab2\\CS4243_Lab2\\.venv\\Lib\\site-packages\\imageio_ffmpeg\\binaries\\ffmpeg-win-x86_64-v7.1.exe",
+    "-hide_banner",
+    "-nostdin",
+    "-n",
+    "-i",
+    "data\\video\\new_video.mp4",
+    "-map",
+    "0:v:0",
+    "-an",
+    "-sn",
+    "-dn",
+    "-map_metadata",
+    "-1",
+    "-map_chapters",
+    "-1",
+    "-vf",
+    "setpts=(PTS-STARTPTS)/1.10444444444444,fps=30,tpad=stop_mode=clone:stop_duration=0.033333333333",
+    "-fps_mode",
+    "cfr",
+    "-frames:v",
+    "450",
+    "-c:v",
+    "libx264",
+    "-preset",
+    "medium",
+    "-crf",
+    "18",
+    "-pix_fmt",
+    "yuv420p",
+    "-fflags",
+    "+bitexact",
+    "-flags:v",
+    "+bitexact",
+    "-metadata",
+    "creation_time=",
+    "-metadata",
+    "encoder=",
+    "-movflags",
+    "+faststart",
+    "D:\\CVPR\\Lab2\\CS4243_Lab2\\data\\personal\\poster_03\\clip.mp4"
+  ],
+  "audit_annotations_created": false,
+  "nominal_source_timestamp": "original video time = 0.0 + 1.10444444444444 * normalised frame index / 30",
+  "notes": "No model inference or overlay run. No glare removal or printed-content editing. Reference corners are input preparation, not audit labels or pipeline initialisation.",
+  "markers": [
+    "[AI-CODE]",
+    "[AI-VISION]"
+  ]
+}

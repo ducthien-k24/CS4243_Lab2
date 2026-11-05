@@ -1,0 +1,99 @@
+{
+  "mode": "personal_clip_frames",
+  "clip_id": "poster_02",
+  "artwork": "../../data/artwork/ad4.png",
+  "reference": "../../data/personal/poster_02/reference.png",
+  "frames": {
+    "clean": 0,
+    "occluded": 120,
+    "perspective": 265,
+    "pair": [
+      270,
+      271
+    ],
+    "note": "Preselected from normalised source before running either method. Corner audit frames: 0,45,90,120,165,225,265,270,285,449. Mask audit frames: 0,45,120,225,265. Annotator: Hoang Bach. Original frame 420 was retired before inference because lower corners were cropped; its unchanged human row is archived, and frame 285 was manually annotated as the replacement. Use the same full audit dictionary for all methods. [AI-DESIGN] [HUMAN-DATA]"
+  },
+  "model": {
+    "requirement": "One open-weight video model generates the edited pixels directly. Inference scripts are permitted. One attempt, fixed settings/seed across duration-limited segments; log every segment and technical retry.",
+    "examples": "Use an open-weight video model your hardware supports, for example MiniMax-H3 (MiniMax, 2026, https://huggingface.co/MiniMaxAI/MiniMax-H3), JoyAI-Video-Edit (JD Open Source, 2026, https://github.com/jd-opensource/JoyAI-Video-Edit), LTX-2.3 (Lightricks, 2026, in/outpainting IC-LoRA) or Wan2.1-VACE-14B (Wan, arXiv:2503.20314; VACE, Jiang et al., arXiv:2503.07598); other open-weight models are equally welcome. Wan2.1-VACE-1.3B (Apache 2.0) is a smaller option; memory depends on settings (staff trial: 14 GB, 13 min for a 5.5 s cut at 480p, mask + reference image). The staff example with MiniMax-H3 is in data/genai_oracle/.",
+    "name": "Wan-AI/Wan2.1-VACE-14B-diffusers",
+    "interval": {
+      "start": 0,
+      "end": 449,
+      "note": "The entire normalised personal clip, inclusive source frames 0-449 (15 seconds at 30 fps). Inputs must use the original source indices. All preselected comparison frames are covered; no source video or audit annotation is modified."
+    },
+    "output_fps": 16,
+    "output": "outputs/genai/output.mp4; outputs/genai/frame_XXXXXX.png (source-indexed audit extracts)",
+    "seed": 2026,
+    "visible_version": null,
+    "settings": {
+      "status": "planned_not_run",
+      "num_frames": 81,
+      "width": 832,
+      "height": 480,
+      "num_inference_steps": 50,
+      "guidance_scale": 5.0,
+      "conditioning_scale": 1.0,
+      "scheduler": "UniPCMultistepScheduler",
+      "flow_shift": 3.0,
+      "precision": "bfloat16; VAE float32",
+      "cpu_offload": "sequential",
+      "vae_tiling": true,
+      "negative_prompt": "",
+      "prompt_extension": false,
+      "execution_mode": "segmented",
+      "num_frames_per_segment": 81,
+      "joined_frames": 240,
+      "planned_total_inference_frames": 243,
+      "discard_tail_frames_per_segment": 1
+    },
+    "notes": "A100 40-GB memory-conscious plan, not GPU-benchmarked: three contiguous 5-second source intervals, source frames 0-149,150-299,300-449. Each uses the same official checkpoint revision, short prompt, seed 2026, 832x480, 16 fps, 50 steps, guidance 5, conditioning 1, UniPC flow shift 3, BF16 with VAE FP32, VAE tiling and sequential CPU offload. Each raw output has 81 frames; preserve it unchanged and retain only indices 0-79 for the final concatenation. The predeclared last padding frame is excluded, giving exactly 240 frames at 16 fps (15 seconds), without retiming, crossfades, geometric correction or classical background compositing. Temporal pair 270-271 stays inside the second segment and maps to joined indices 144-145. Record every segment and unchanged-settings technical retry in genai_log.csv. Replacement capture poster_02 is configured before its local method runs; no inference was performed in this setup. Preserve logs of any prior capture attempts on other machines.",
+    "segments": [
+      {
+        "start": 0,
+        "end": 149,
+        "num_frames": 81,
+        "keep_frames": 80
+      },
+      {
+        "start": 150,
+        "end": 299,
+        "num_frames": 81,
+        "keep_frames": 80
+      },
+      {
+        "start": 300,
+        "end": 449,
+        "num_frames": 81,
+        "keep_frames": 80
+      }
+    ]
+  },
+  "prompt": {
+    "inputs": [
+      "data/personal/poster_02/clip.mp4 (full normalised source clip)",
+      "data/artwork/ad4.png (artwork reference)",
+      "outputs/genai/inputs/masks/mask_XXXXXX.png (fresh poster_02 board masks exported by Notebook 4 from the frozen classical pipeline; not audit foreground masks)"
+    ],
+    "template": "Replace the advertisement on the board in this video with the attached artwork."
+  },
+  "evaluation": "python -m overlaylab.evaluate --frames outputs/genai/frame_*.png --clip poster_02 --artwork ad4",
+  "declaration": "model name and visible version, date, settings (steps, resolution, seed), the video you gave it (whole clip, cut, or joined segments), output fps, prompt, time, compute",
+  "log_fields": [
+    "date",
+    "model",
+    "visible_version",
+    "settings",
+    "seed",
+    "interval",
+    "output_fps",
+    "prompt",
+    "inputs",
+    "input_resolution",
+    "output_resolution",
+    "processing_time_s",
+    "compute",
+    "output_path",
+    "notes"
+  ]
+}

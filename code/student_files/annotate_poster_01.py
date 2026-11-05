@@ -26,14 +26,16 @@ def invoke(*args):
     return subprocess.run([sys.executable, "-m", "overlaylab.annotate", *args], cwd=CODE).returncode
 
 
-def main():
-    plan = json.loads(PLAN.read_text(encoding="utf-8"))
+def main(plan_path=PLAN):
+    plan = json.loads(Path(plan_path).read_text(encoding="utf-8"))
     clip_id, annotator = plan["clip_id"], plan["annotator"]
     corner_ids, mask_ids = plan["corner_frames"], plan["mask_frames"]
     print("Annotator:", annotator, flush=True)
     print("Corners: TL -> TR -> BR -> BL, Enter to save each frame.", flush=True)
     print("Masks: click polygon, Enter to fill, s to save; empty-mask frames: s.", flush=True)
-    print("Estimate an occluded corner manually from the visible poster edges; never label a folder corner.", flush=True)
+    if plan.get("empty_mask_frames"):
+        print("Empty-mask frames:", plan["empty_mask_frames"], "(leave empty and press s).", flush=True)
+    print("Estimate an occluded corner manually from the visible poster edges; never label an occluder corner.", flush=True)
     print("q stops the current stage; this helper will not proceed if frames are incomplete.", flush=True)
     missing = sorted(set(corner_ids) - annotated_frames("audit_corners.csv", clip_id, annotator))
     if missing:
