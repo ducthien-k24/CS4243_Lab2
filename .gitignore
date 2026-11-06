@@ -15,3 +15,4 @@ data/common_clip/frames/
 # Editors
 .vscode/
 .idea/
+code/outputs/videos/*.mp4
