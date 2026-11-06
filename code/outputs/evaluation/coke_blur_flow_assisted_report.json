@@ -1,0 +1,449 @@
+{
+  "mode": "video",
+  "video": "outputs/videos/coke_blur_flow_assisted.mp4",
+  "interval": [
+    0,
+    499
+  ],
+  "offset": 0,
+  "output_resolution": [
+    1280,
+    720
+  ],
+  "original_resolution": [
+    1280,
+    720
+  ],
+  "resized": false,
+  "missing_frames": [],
+  "placement": {
+    "n": 32,
+    "median": 0.004938440148208122,
+    "p90": 0.011636622880524302,
+    "success": 0.125,
+    "failed": 28,
+    "detection_rate": 0.125,
+    "threshold": 0.02,
+    "per_frame": {
+      "0": 0.002914752928809764,
+      "16": 0.00499210943378134,
+      "32": null,
+      "48": null,
+      "64": 0.014484271500556997,
+      "80": null,
+      "96": null,
+      "112": 0.004884770862634903,
+      "128": null,
+      "144": null,
+      "160": null,
+      "176": null,
+      "192": null,
+      "208": null,
+      "224": null,
+      "240": null,
+      "256": null,
+      "272": null,
+      "288": null,
+      "304": null,
+      "320": null,
+      "336": null,
+      "352": null,
+      "368": null,
+      "384": null,
+      "400": null,
+      "416": null,
+      "432": null,
+      "448": null,
+      "464": null,
+      "480": null,
+      "496": null
+    }
+  },
+  "fidelity": {
+    "ncc": 0.26874197483994067,
+    "ssim": 0.3833827172771285,
+    "mae": 0.2404048526659608,
+    "structure": 0.13561879833287094
+  },
+  "preservation": {
+    "psnr_outside": 37.96751104501851,
+    "ssim_outside": 0.9873203370351231,
+    "mad_outside": 0.010609885619487613,
+    "background_drift_px": 0.41855789267498517
+  },
+  "preservation_per_frame": [
+    {
+      "frame": 0,
+      "psnr_outside": 35.55471269758825,
+      "ssim_outside": 0.9759724330362437,
+      "mad_outside": 0.013306080363690853,
+      "background_drift_px": 0.04248799383640289
+    },
+    {
+      "frame": 16,
+      "psnr_outside": 37.45793544279675,
+      "ssim_outside": 0.9826017356143354,
+      "mad_outside": 0.010939059779047966,
+      "background_drift_px": 0.1299089789390564
+    },
+    {
+      "frame": 32,
+      "psnr_outside": 38.24388279849656,
+      "ssim_outside": 0.9866086559164028,
+      "mad_outside": 0.010282300412654877,
+      "background_drift_px": NaN
+    },
+    {
+      "frame": 48,
+      "psnr_outside": 38.51741045973732,
+      "ssim_outside": 0.989932559110997,
+      "mad_outside": 0.010210789740085602,
+      "background_drift_px": NaN
+    },
+    {
+      "frame": 64,
+      "psnr_outside": 37.41903376379321,
+      "ssim_outside": 0.9876895294004697,
+      "mad_outside": 0.010533244349062443,
+      "background_drift_px": 0.3753827214241028
+    },
+    {
+      "frame": 80,
+      "psnr_outside": 37.50633198607717,
+      "ssim_outside": 0.9848350679608201,
+      "mad_outside": 0.01101724710315466,
+      "background_drift_px": 0.39010488986968994
+    },
+    {
+      "frame": 96,
+      "psnr_outside": 38.23836680387186,
+      "ssim_outside": 0.9908686570287394,
+      "mad_outside": 0.010497299022972584,
+      "background_drift_px": NaN
+    },
+    {
+      "frame": 112,
+      "psnr_outside": 36.97162113306681,
+      "ssim_outside": 0.987045050344991,
+      "mad_outside": 0.011079875752329826,
+      "background_drift_px": 0.08624907582998276
+    },
+    {
+      "frame": 128,
+      "psnr_outside": 38.13907293572335,
+      "ssim_outside": 0.9907647337058231,
+      "mad_outside": 0.010639285668730736,
+      "background_drift_px": 0.15043221414089203
+    },
+    {
+      "frame": 144,
+      "psnr_outside": 38.33776944486519,
+      "ssim_outside": 0.9896672145505822,
+      "mad_outside": 0.010388867929577827,
+      "background_drift_px": NaN
+    },
+    {
+      "frame": 160,
+      "psnr_outside": 38.56958933123434,
+      "ssim_outside": 0.9914140398028756,
+      "mad_outside": 0.010193060152232647,
+      "background_drift_px": NaN
+    },
+    {
+      "frame": 176,
+      "psnr_outside": 37.786887845966234,
+      "ssim_outside": 0.9887567087189997,
+      "mad_outside": 0.010845259763300419,
+      "background_drift_px": 0.3298061490058899
+    },
+    {
+      "frame": 192,
+      "psnr_outside": 37.44954604647094,
+      "ssim_outside": 0.9840788259484964,
+      "mad_outside": 0.011002390645444393,
+      "background_drift_px": 0.10295026749372482
+    },
+    {
+      "frame": 208,
+      "psnr_outside": 38.07488871947115,
+      "ssim_outside": 0.9881347101098841,
+      "mad_outside": 0.010599533095955849,
+      "background_drift_px": NaN
+    },
+    {
+      "frame": 224,
+      "psnr_outside": 37.927204629245225,
+      "ssim_outside": 0.9859287869695731,
+      "mad_outside": 0.010625636205077171,
+      "background_drift_px": 0.4861098825931549
+    },
+    {
+      "frame": 240,
+      "psnr_outside": 37.97430198720474,
+      "ssim_outside": 0.9878448529432867,
+      "mad_outside": 0.010714453645050526,
+      "background_drift_px": 1.6091063022613525
+    },
+    {
+      "frame": 256,
+      "psnr_outside": 38.120448825966704,
+      "ssim_outside": 0.989141329704241,
+      "mad_outside": 0.010237805545330048,
+      "background_drift_px": NaN
+    },
+    {
+      "frame": 272,
+      "psnr_outside": 37.783065606934144,
+      "ssim_outside": 0.9825275224168641,
+      "mad_outside": 0.010633240453898907,
+      "background_drift_px": 0.16714748740196228
+    },
+    {
+      "frame": 288,
+      "psnr_outside": 38.52284610767761,
+      "ssim_outside": 0.9910045814016915,
+      "mad_outside": 0.010183376260101795,
+      "background_drift_px": 1.1363399028778076
+    },
+    {
+      "frame": 304,
+      "psnr_outside": 38.27709695289347,
+      "ssim_outside": 0.9872198625167168,
+      "mad_outside": 0.010276583954691887,
+      "background_drift_px": NaN
+    },
+    {
+      "frame": 320,
+      "psnr_outside": 38.61650792828095,
+      "ssim_outside": 0.9894574984374545,
+      "mad_outside": 0.010045861825346947,
+      "background_drift_px": 1.198986291885376
+    },
+    {
+      "frame": 336,
+      "psnr_outside": 38.05878031784896,
+      "ssim_outside": 0.9873280864517942,
+      "mad_outside": 0.010502985678613186,
+      "background_drift_px": 1.2801592350006104
+    },
+    {
+      "frame": 352,
+      "psnr_outside": 38.181677406350175,
+      "ssim_outside": 0.9876906661958939,
+      "mad_outside": 0.01048966683447361,
+      "background_drift_px": 0.3737117052078247
+    },
+    {
+      "frame": 368,
+      "psnr_outside": 38.571798512569785,
+      "ssim_outside": 0.9918615643219763,
+      "mad_outside": 0.010193007998168468,
+      "background_drift_px": 0.2184499353170395
+    },
+    {
+      "frame": 384,
+      "psnr_outside": 37.912628330197926,
+      "ssim_outside": 0.9827359874250249,
+      "mad_outside": 0.01055224146693945,
+      "background_drift_px": 0.3102564513683319
+    },
+    {
+      "frame": 400,
+      "psnr_outside": 38.23968257065611,
+      "ssim_outside": 0.9869583729538662,
+      "mad_outside": 0.010290886275470257,
+      "background_drift_px": 0.2157691866159439
+    },
+    {
+      "frame": 416,
+      "psnr_outside": 38.200062924675976,
+      "ssim_outside": 0.9889072335459507,
+      "mad_outside": 0.010488924570381641,
+      "background_drift_px": 0.13826552033424377
+    },
+    {
+      "frame": 432,
+      "psnr_outside": 38.23253596953352,
+      "ssim_outside": 0.9885809252399753,
+      "mad_outside": 0.010418012738227844,
+      "background_drift_px": NaN
+    },
+    {
+      "frame": 448,
+      "psnr_outside": 37.827412015408484,
+      "ssim_outside": 0.9861555259620701,
+      "mad_outside": 0.010701796971261501,
+      "background_drift_px": 0.16802746057510376
+    },
+    {
+      "frame": 464,
+      "psnr_outside": 38.389762427969416,
+      "ssim_outside": 0.9896409073810223,
+      "mad_outside": 0.010317773558199406,
+      "background_drift_px": 0.2625463604927063
+    },
+    {
+      "frame": 480,
+      "psnr_outside": 38.017220004148776,
+      "ssim_outside": 0.9861198852700421,
+      "mad_outside": 0.010476306080818176,
+      "background_drift_px": 0.27057433128356934
+    },
+    {
+      "frame": 496,
+      "psnr_outside": 37.84027151387119,
+      "ssim_outside": 0.9867772747368353,
+      "mad_outside": 0.01083348598331213,
+      "background_drift_px": 0.18405918776988983
+    }
+  ],
+  "temporal": {
+    "stride": 1,
+    "flicker": 0.18573066976387054,
+    "warping_error": 0.16692506580147892,
+    "recovered_corner_jitter_px": 12.934258930553712,
+    "pairs": 32,
+    "pair_frames": [
+      [
+        0,
+        1
+      ],
+      [
+        16,
+        17
+      ],
+      [
+        32,
+        33
+      ],
+      [
+        48,
+        49
+      ],
+      [
+        64,
+        65
+      ],
+      [
+        80,
+        81
+      ],
+      [
+        96,
+        97
+      ],
+      [
+        112,
+        113
+      ],
+      [
+        128,
+        129
+      ],
+      [
+        144,
+        145
+      ],
+      [
+        160,
+        161
+      ],
+      [
+        176,
+        177
+      ],
+      [
+        192,
+        193
+      ],
+      [
+        208,
+        209
+      ],
+      [
+        224,
+        225
+      ],
+      [
+        240,
+        241
+      ],
+      [
+        256,
+        257
+      ],
+      [
+        272,
+        273
+      ],
+      [
+        288,
+        289
+      ],
+      [
+        304,
+        305
+      ],
+      [
+        320,
+        321
+      ],
+      [
+        336,
+        337
+      ],
+      [
+        352,
+        353
+      ],
+      [
+        368,
+        369
+      ],
+      [
+        384,
+        385
+      ],
+      [
+        400,
+        401
+      ],
+      [
+        416,
+        417
+      ],
+      [
+        432,
+        433
+      ],
+      [
+        448,
+        449
+      ],
+      [
+        464,
+        465
+      ],
+      [
+        480,
+        481
+      ],
+      [
+        496,
+        497
+      ]
+    ]
+  },
+  "occlusion": {
+    "leakage": NaN,
+    "psnr_foreground": NaN,
+    "coverage_visible": NaN,
+    "false_occlusion": NaN,
+    "mask_frames": 0,
+    "empty_mask_frames": 0,
+    "n_coverage_frames": 0,
+    "n_false_occlusion_frames": 0,
+    "overlay_absent_frames": [],
+    "per_frame": []
+  }
+}

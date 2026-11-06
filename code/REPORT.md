@@ -4,7 +4,7 @@
 DRAFT STATUS (delete this comment before submission)
 - Stage 1 and Stage 2 tables are pasted unchanged from outputs/stress_tables.md (run_pipeline --all + report, full resolution, frozen thresholds).
   All Stage 1-2 numbers in the text were re-derived from those runs (outputs/videos/*_stats.json, outputs/stress_tables.json).
-- [Figure: ...] = insert the named notebook figure.
+- Figures in student_files/report_figures/ are produced by make_report_figures.py there (frozen config, saved runs); rerun it from code/ on the submitting machine before packaging.
 - AI-use markers ([AI-CODE], [AI-LANGUAGE], [HUMAN-CHECK], ...) still have to be added after the Stage 1-2 paragraphs they cover,
   and the AI-use table completed for Person A.
 -->
@@ -100,13 +100,23 @@ Validation sweep (common · validation, full-res, `evaluate_audit_frames`):
 
 ### Evidence
 
-- **Inlier count and ratio against frame index** (common · validation, NB-640, NB2 §2; common · test plot in NB2 §3). The inlier count follows the board's on-screen size and texture visibility: 192 inliers on frame 0, down to 42 on frame 448. The ratio stays at 0.78–0.98 on validation. [Figure: NB2 §3 inlier count / ratio plot]
+- **Inlier count and ratio against frame index** (common · validation and test, full-res, frozen config; per-frame values from the Stage 1 table run). The inlier count follows how much of the board is visible and sharp: 16–254 on validation and 5–279 on test. The inlier ratio is 0.34–0.87 on validation. The two dips are the hardest frames discussed next: test frame 48 (5 inliers, the only frame that fails) and validation frame 448 (16 inliers).
+
+  ![Inliers and inlier ratio against frame index](student_files/report_figures/s1_inliers_vs_frame.png)
+
+  *Common clip · validation and test · full resolution, frozen settings. Red cross: fails the 2 % threshold; dashed line: `min_inliers` = 12.*
 - **RANSAC versus least squares on all ratio-test matches** (common · test, NB-640, NB2 §4, same matches and settings). RANSAC gives 0.37–0.95 % on every test frame. Least-squares DLT on all matches is pulled away by the few outliers: 34.2 % on frame 16, 144.4 % on frame 48, 57.4 % on frame 96, 29.6 % on frame 368. It is competitive only on frames where nearly every match is correct (224: 0.52 %; 256: 0.60 %). A handful of wrong matches is enough to ruin an unweighted least-squares fit, because their squared residuals dominate the cost.
 - **Two worst cases** (common clip, full-res, frozen config). Only **one** common frame fails the frozen threshold:
   1. **common · test frame 48** fails. RANSAC finds only 5 inliers (ratio 0.19 of the ratio-test matches), below `min_inliers = 12`, so no model is returned.
   2. **common · validation frame 448** *passes* with 0.95 %. It is nevertheless the worst validation frame: 16 inliers, inlier ratio 0.34, the lowest in the subset.
 
-  In both frames the board is small or far, and few descriptors survive the ratio test. [Figure: for frames 48 and 448 — matches (inliers green / outliers red), histogram of residuals `diag["residuals"]`, projected quadrilateral against the GT quadrilateral]
+  The causes differ:
+  - **Frame 48** is strongly **motion-blurred**: the poster texture is smeared, so only 26 ratio-test matches survive. Even the best 4-point model explains just 5 of them; the remaining residuals spread over hundreds of pixels. RANSAC therefore reports no model, and the frame counts as a failure rather than a wrong placement.
+  - **Frame 448** has the blue card covering roughly the lower 40 % of the board, so matches come only from the upper part. The 16 inliers nevertheless fix all four corners to 0.95 %, because a homography extrapolates correctly over the plane.
+
+  ![Two worst common frames](student_files/report_figures/s1_worst_cases.png)
+
+  *Common clip, full resolution, frozen settings. Left: reference (top) and frame with matches (green = RANSAC inliers, red = outliers). Middle: residuals √(eᵢ/2) of the best RANSAC model; the dashed line is the inlier threshold. Right: GT quadrilateral (green) against the estimate (red).*
 
 ### Question 1 — Matching
 <!-- a frame pair on the viewpoint or scale clip where the matching rate collapses; rotation absorbed by the dominant orientation vs viewpoint / scale not absorbed; which descriptor component fails; the labelled SIFT cell -->
@@ -134,7 +144,11 @@ The orientation histogram is computed over the same mis-scaled window, so θ its
 
 On the viewpoint clip, the matching rate falls from 0.255 (frame 128, keystone 1.09) to 0.034 (frame 256, keystone 1.57). In that clip the board also shrinks (0.69× the reference width), so viewpoint and scale are confounded there. That is why the scale clip is used for the pair above.
 
-<!-- TODO: viewpoint frames 464/480 also fail at low keystone (1.01–1.07) and width ~1.2× while the in-plane angle changes by ~13° over 16 frames; check visually (motion blur?) before mentioning. -->
+Not every viewpoint-clip failure is a viewpoint effect. Frames 464 and 480 fail (5 and 7 inliers) although their keystone is low (1.01–1.07) and the board is larger than the reference (about 1.2×). Over 448 → 464 the in-plane angle changes by about 13°, and frame 464 is visibly **motion-blurred**: the Laplacian variance of the board region falls to about one third of frame 448's. Blur removes the gradient structure the descriptor histograms rely on. Neither the dominant orientation nor any other part of the descriptor absorbs it.
+
+![Viewpoint clip frames 448, 464, 480](student_files/report_figures/q1_viewpoint_448_464_480.png)
+
+*Viewpoint clip (`coke_perspective`), annotated frames 448 / 464 / 480, full resolution, frozen settings: board crops with inlier counts and board sharpness (Laplacian variance).*
 
 **Scale row.** The scale row reports only **28 % success** (9 of 32 annotated frames; 23 failed), with a median of 5 inliers and an inlier ratio of 0.182. The median error of the frames that do succeed is low (0.39 %): when the descriptor matches, the geometry is fine; the failures are all-or-nothing.
 
@@ -157,7 +171,11 @@ Because the reference has a fixed size, a descriptor without scale invariance wo
 - **An affine map cannot represent this.** It preserves parallelism and length ratios along parallel lines, so it can only produce a parallelogram. The best affine fit to a keystoned quadrilateral therefore leaves an error that grows with the keystone.
 - **A homography can.** Its last row (h₃₁, h₃₂) makes the projective scale depend on position, which is the perspective division by depth. A plane imaged by a pinhole camera from *any* viewpoint is exactly related to the reference by a homography, so the homography error does not grow as the camera orbits. Its misses (12 of 32 frames: 160, 208, 240–352, 464, 480) are matching failures rather than model failures: on the ones inspected, RANSAC keeps only 4–11 inliers (160: 11, 240: 7, 256: 4, 464: 5, 480: 7), and in 240–352 the board is also small.
 
-**Whole-frame warp and parallax** (NB2 §6). [Figure: NB2 §6 — a frame warped onto another frame with the board's homography; board aligned, background misaligned]
+**Whole-frame warp and parallax** (viewpoint clip, full-res; same experiment as NB2 §6). Frame 192 is warped into frame 0 with the board-induced homography H₀ · H₁₉₂⁻¹. In the 50/50 blend the poster is sharp, while structure off the poster is doubled: the brick wall on a different plane, and the parking signs beside the poster. Part of the signs' shift is also the estimated homography being extrapolated beyond the board region it was fitted on.
+
+![Whole-frame warp and parallax](student_files/report_figures/q2_parallax_whole_frame_warp.png)
+
+*Viewpoint clip (`coke_perspective`) frames 0 and 192, full resolution, frozen settings: frame 192 warped into frame 0 with our `warp_artwork` (left) and the 50/50 blend with frame 0 (right, board outlined).*
 
 - **What a homography represents.** The board's homography is the plane-induced homography of the board plane. For two camera positions with relative motion (R, t) and board plane (n, d): H = K(R + t nᵀ/d)K⁻¹. A point at depth offset δ from the plane lands away from its true position by an amount proportional to |t|·δ/(depth·(depth ± δ)). The shift grows with the camera translation and with the distance from the plane, and it vanishes for points *on* the plane or for a purely rotating camera (t = 0).
 - **Why parallax does not harm the overlay.**
@@ -226,9 +244,17 @@ From the `_stats.json` of each run. Jitter uses the full available corner trajec
 
 ### Evidence
 
-- **A sequence in which optical flow stabilises the overlay.** Combined clip · flow_assisted (full-res): the tracker is initialised at frame 299 and LK carries the track through frames 300–307 without relocalisation. The inlier ratio is 0.86–0.98, the median residual is 0.83–1.05 px, and the corner displacement follows the camera (3.1–11.6 px per frame). [Figure: overlay frames 299–307 or `viz.plot_monitor_timeline` crop]
+- **A sequence in which optical flow stabilises the overlay.** Combined clip · flow_assisted (full-res): the tracker is initialised at frame 299 and LK carries the track through frames 300–307 without relocalisation. The inlier ratio is 0.86–0.98, the median residual is 0.83–1.05 px, and the corner displacement follows the camera (3.1–11.6 px per frame). As the card enters (frames 304–307) the LK points under it are rejected (red arrows) and dropped, while the surviving inliers keep the quadrilateral on the board.
+
+  ![Flow-assisted tracking on the combined clip](student_files/report_figures/s2_flow_stabilised_combined_300s.png)
+
+  *Combined clip (`coke_unconstrained`) · flow_assisted · full resolution: LK vectors ×3 (green valid, red invalid) on frames 301 / 304 / 307 and the tracked quadrilateral (blue).*
 - **A sequence in which it fails.**
   - *Blur clip* · flow_assisted. LK tracks frames 1–22. The median λ₂ at the tracked points falls from 3.3e-3 (frame 1) to 3.3e-4 (frame 12) as motion blur smears the texture. At frame 12, 12 of 53 points fall below the λ₂ threshold and 13 fail the residual test. Only 27 valid points remain. After frame 22 the track is lost, and relocalisation succeeds only sporadically: 43/500 frames are tracked in total.
+
+    ![Blur clip eigenvalues](student_files/report_figures/q3_blur_eigenvalues.png)
+
+    *Blur clip (`coke_blur`) · flow_assisted · full resolution. Left: median λ₂ and number of valid LK points over the flow-tracked frames. Right: (λ₁, λ₂) of every tracked point at frame 12, split into valid, residual (brightness-constancy) failures and λ₂ < `min_eigenvalue` (aperture-type) failures.*
   - *Large motion* (NB2 §7, common · NB-640, frames 170→171). The camera moves about 27 px in one frame: the `cv2.calcOpticalFlowPyrLK` median is 27.2 px with 2 pyramid levels. Our single-level LK with a 15×15 window accepts only 6 of 78 points; most of the others fail the residual test. The displacement is outside the basin of convergence of single-level LK, which the optional pyramid would extend.
 
 ### Question 3 — Tracking
@@ -256,7 +282,11 @@ From the `_stats.json` of each run. Jitter uses the full available corner trajec
 - **Where the failures lie.** Our tracked points are Harris inliers, which are corners of the poster's interior texture, so the board's long straight edges are almost never tracked. Only about 2 % of tracked points lie within 15 px of the board boundary, and none of the blur clip's aperture failures do. Aperture failures therefore appear inside the board, where blur turns texture corners into edges, rather than along the board's straight outline. Brightness-constancy failures are spread over the board wherever the blurred appearance in frame t+1 no longer matches the template from frame t.
 - **The blur clip's dominant failure is upstream of flow.** 457 HIDE `no_model` frames: once the board is blurred, Harris and descriptor matching cannot relocalise it (481 localiser calls, 43/500 frames tracked).
 
-**Monitor timeline of the combined clip** (`coke_unconstrained` · flow_assisted, full-res). [Figure: `viz.plot_monitor_timeline` on `coke_unconstrained_flow_assisted_stats.json`]
+**Monitor timeline of the combined clip** (`coke_unconstrained` · flow_assisted, full-res).
+
+![Monitor timeline of the combined clip](student_files/report_figures/q3_monitor_timeline_combined.png)
+
+*Combined clip (`coke_unconstrained`) · flow_assisted · full resolution: online statistics (inlier ratio, mean flow, brightness change) with the frozen thresholds (dashed), HIDE (red) and REINIT (orange) frames, the two card crossings and two fast-rotation intervals (shaded), and the audit corner error on annotated frames where the overlay is shown.*
 
 - **Card crossings (frames 210–222 and 302–314).** No REINIT statistic fires *first*. The tracker keeps an OK model while LK simply discards the points under the card:
   - At the second crossing the valid-point count falls from 221 (frame 300) to 52 (frame 307), and the inlier count from 217 to 50. Meanwhile the inlier ratio over the surviving valid points stays at 0.86–0.98 and the median residual at 0.8–1.1 px. At frame 308 only 30 valid points remain (27 inliers, ratio 0.90). Even then no rule fires: 27 ≥ 12 inliers and 0.90 ≥ 0.40.
