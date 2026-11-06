@@ -286,13 +286,21 @@ Because the four corners are always projected from the reference rectangle, the 
 
 ## Stage 3 — Composite
 <!-- hysteresis, compensated_difference, occlusion_mask, select_difference_thresholds, composite; mask IoU / F1 / leakage; frozen thresholds -->
-<!-- TODO (Person B) -->
+
+We warp the board reference into each frame using the estimated homography. `compensated_difference` fits one global gain and offset to the lower-residual covered pixels, then measures the mean absolute RGB residual. `hysteresis` keeps weak residuals connected to strong seeds. `occlusion_mask` opens that mask with a disk and removes small connected components. `composite` feathers the visible artwork coverage, leaving the observed pixels in areas marked as foreground. `select_difference_thresholds` selects the difference settings using the three common validation masks, with the Stage 1–2 settings held fixed. The saved settings are strong 0.25, weak 0.12, opening radius 2 px and minimum area 152 pixels at full resolution (38 processing pixels at width 640). [AI-LANGUAGE]
 ### Stress table (Stage 3)
 <!-- generated rows: common · validation / test, viewpoint, combined — corner error, mask IoU / F1 / boundary F1 / leakage, without occlusion handling, frames hidden / scored -->
 <!-- PASTE the Stage 3 table from outputs/stress_tables.md here, unchanged. -->
 ### Question 4 — Occlusion
 <!-- strong threshold and minimum area; hysteresis on a thin occluder vs opening; one false-occlusion mechanism on the viewpoint clip and the violated assumption -->
-<!-- TODO (Person B) -->
+
+**Which occluders the residual recovers.** On the common clip at width 640 with independent localisation, the frozen mask recovers most of the occluder on the three validation masks (mean IoU 0.8971 and F1 0.9456). On the three held-out test masks, mean IoU is 0.8330, F1 is 0.9051 and boundary F1 is 0.5675. All three masks in each split were scored, with zero hidden or missing. On test, mean alpha leakage drops from 84.67% with no occlusion handling to 0.70% with the mask. Frame 448 has IoU 0.6892 and boundary F1 0.3944, illustrating that protecting the foreground can coexist with imperfect boundary localisation. High-contrast foreground with connected residuals is well supported. Foreground close in colour to the underlying board or reduced to a narrow edge can lack strong seeds or be removed by opening. [Validation evidence](student_files/notebook3/common_validation_metrics.json) · [Test evidence](student_files/notebook3/common_test_metrics.json)
+
+**Strong threshold and minimum area.** Raising the strong threshold requires more evidence to seed a region. Weak pixels can still be retained if connected to a surviving seed. Raising the minimum area removes small surviving components and can also discard genuine small occluders. In the width-640 common validation ablation, raising strong from 0.25 to 0.375 or minimum area from 38 to 228 processing pixels left mean IoU at 0.8971 and leakage at 1.36% on all three masks. These changes did not alter the measured result for this validation subset. [Validation ablations](student_files/notebook3/validation_ablations.json)
+
+**Hysteresis and opening.** On those same three common validation masks, setting weak equal to strong drops mean IoU to 0.6778 and increases leakage to 19.85%. Weak but connected foreground pixels therefore matter to the composite. With opening enabled, mean IoU rises from 0.8863 to 0.8971 while leakage rises slightly from 1.34% to 1.36%. In a controlled residual-map diagnostic, a 120-pixel-long horizontal strip has residual 0.20 with a 5-pixel-long seed of residual 0.50. Using the Notebook 3 processing settings, widths 1–4 px are removed by the radius-2 disk and width 5 px is the thinnest tested strip that survives (588 of 600 pixels). With radius 0, even the 1-pixel strip survives because its area exceeds 38 pixels. This is a measurement for a straight synthetic strip, where length and orientation are controlled.
+
+**False occlusion under viewpoint change.** In the width-640 independent diagnostic on `coke_perspective`, frame 224 uses the estimated frozen homography and has an empty foreground audit mask. The predicted mask still covers 4.5% of the board. Frame 288 has 2.7% false occlusion even with the explicitly labelled GT-fallback homography. The latter is diagnostic evidence only. A homography aligns the plane, but perspective changes the sampling of high-contrast edges and may change local appearance. One global gain and offset cannot account for spatially varying residuals. Strong residuals can therefore seed connected false regions in the weak mask. The evidence identifies the residual mechanism, while the images alone do not separate resampling, blur and illumination effects. [Frame 224 residual and mask](student_files/notebook3/viewpoint_false_occlusion_000224.png) · [Frame 288 GT-fallback diagnostic](student_files/notebook3/viewpoint_false_occlusion_000288.png) [AI-LANGUAGE]
 
 ## Stage 4 — Your clip
 ### Capture and audit
@@ -300,7 +308,7 @@ Because the four corners are always projected from the reference rectangle, the 
 <!-- TODO (Person B) -->
 ### Overlay Scorecard
 <!-- outputs/scorecards/<clip_id>_scorecard.md for both variants; one representative frame + one failure frame -->
-<!-- TODO (Person B) -->
+The [poster_03 Overlay Scorecard](outputs/scorecards/poster_03_scorecard.md) covers both classical variants on the full-resolution personal audit. Frame 240 illustrates an overlay that follows the tilted board. Flow-assisted frame 195 is the placement failure at the frozen threshold despite the monitor reporting OK. [Audit examples](student_files/personal_preparation/poster_03/scorecard_audit_examples.png) [AI-LANGUAGE]
 ### Generative comparison
 <!-- the open-weight video model you chose (direct pixel generation; inference scripts permitted), its settings, the video you gave it (whole clip, a cut, or joined segments), and why (cite the model); the seed, the log, the overlaylab.evaluate --frames report, comparison table against the classical output on the same frames, [AI-GENERATION] markers -->
 <!-- TODO (Person B) -->
@@ -315,9 +323,10 @@ Because the four corners are always projected from the reference rectangle, the 
 | geometry.py | bilinear_sample, normalise_points, dlt_homography, symmetric_transfer_error, ransac_homography, transfer_points, warp_artwork | Stage 1 Implementation; Evidence (RANSAC vs least squares); Q2 | NB1 §6 (normalised vs raw DLT, degenerate case, `cv2.findHomography` check), §7 (RANSAC threshold / N(p,ε)), §8 (warp convention, `cv2.warpPerspective` comparison); NB2 §4 |
 | localisation.py | localise_board, artwork_to_frame, overlay_frame, evaluate_audit_frames | Stage 1 Implementation; Frozen settings; Stress table; Evidence (inliers, worst cases); Q2 (affine vs homography, parallax) | NB2 §2–§6; Stage 1 stress table; `outputs/videos/*.mp4` |
 | temporal.py | lk_flow, track_board, failure_monitor | Stage 2 Implementation; Stress table; Evidence; Q3 | NB2 §7 (LK flow, eigenvalues, `cv2.calcOpticalFlowPyrLK` cell), §8 (two variants, jitter/drift), §9 (monitor); Stage 2 stress table; combined-clip monitor timeline |
-| compositing.py | hysteresis, compensated_difference, occlusion_mask, select_difference_thresholds, composite | <!-- TODO (Person B) --> | <!-- TODO (Person B) --> |
+| compositing.py | hysteresis, compensated_difference, occlusion_mask, select_difference_thresholds, composite | Stage 3 Composite and Q4 | NB3 validation threshold search, held-out mask evaluation, hysteresis/opening ablations and viewpoint residual panels |
 
 ## AI-use disclosure table
 | Tool / model | Affected artefacts (file, cell, figure, section) | Markers | What the tool contributed | How it was verified |
 |---|---|---|---|---|
 | | | [AI-CODE] [AI-DESIGN] [AI-VISION] [AI-GENERATION] [AI-LANGUAGE] [HUMAN-DATA] [HUMAN-CHECK] | | |
+| Codex | Stage 3/Q4 and poster_03 Scorecard | [AI-LANGUAGE] [AI-CODE] | Drafted analysis and assembled the audit comparison and diagnostic measurements | Checked saved Notebook 3 outputs and recomputed mask overlap, frame-0 localisation and same-pose alpha leakage from the frozen settings and saved audit data |

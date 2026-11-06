@@ -44,8 +44,8 @@
       "f1": 0.9322726770522595,
       "leakage": 0.0,
       "baseline_leakage": 0.923006625542609,
-      "false_occlusion": 0.017932447877665236,
-      "coverage_visible": 0.9210578173649154
+      "false_occlusion": 0.017946594091429024,
+      "coverage_visible": 0.9217844042125193
     },
     {
       "clip": "combined",

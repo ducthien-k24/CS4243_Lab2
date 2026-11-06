@@ -1,0 +1,82 @@
+{
+  "model": "MiniMaxAI/MiniMax-H3",
+  "revision": "42ed227ee7df40d41602854ae760620d6eb651fe",
+  "status": "complete",
+  "workflow": "ref2va",
+  "prompt": "Replace the advertisement on the board in <Video 1> with the attached artwork <Picture 1>.",
+  "seed": 2026,
+  "steps": 30,
+  "fps": 24,
+  "width": 864,
+  "height": 480,
+  "raw_frames_per_segment": 124,
+  "reference_image_short_edge": 768,
+  "precision": "bfloat16",
+  "offload": "ComponentsManager auto CPU offload",
+  "gpu": "NVIDIA A100 80GB PCIe",
+  "gpu_bytes": 85093777408,
+  "slurm_job_id": "1083102",
+  "video_sha256": "717bffb27c0c7d9022cefdc4e828d4b6311d554e49637f86fde78ddc5e9022b8",
+  "artwork_sha256": "3a8e25e3a7b7506d6cf58d85757c8a4533b30a9aea1d728a3bc1c59648005566",
+  "code_sha256": "ca3eec1d0daf1bfc2048daee8aead16cca7b2e1f86182c66539f5425c8e53536",
+  "versions": {
+    "torch": "2.9.1+cu126",
+    "diffusers": "0.42.1",
+    "transformers": "5.22.1",
+    "accelerate": "1.15.0",
+    "av": "18.1.0"
+  },
+  "audit_output_frames": {
+    "0": 0,
+    "45": 36,
+    "240": 192,
+    "390": 312,
+    "391": 313
+  },
+  "segments": [
+    {
+      "index": 0,
+      "start": 0,
+      "end": 149,
+      "output_start": 0,
+      "keep_frames": 120,
+      "status": "complete",
+      "raw": "segment_00_raw.mp4",
+      "sha256": "dc1b51adb00dc67ce0b86610ce0fafb1cf46468e83883ae07ae00a287a5dc853",
+      "wall_seconds": 1759.1767577650025,
+      "peak_cuda_allocated_bytes": 81712216064
+    },
+    {
+      "index": 1,
+      "start": 150,
+      "end": 299,
+      "output_start": 120,
+      "keep_frames": 120,
+      "status": "complete",
+      "raw": "segment_01_raw.mp4",
+      "sha256": "1e75c53b671c1b2d068fb85a56c66a8c3d3120ea9b13265730b619e61f8d8f21",
+      "wall_seconds": 1498.5493665898684,
+      "peak_cuda_allocated_bytes": 82576938496
+    },
+    {
+      "index": 2,
+      "start": 300,
+      "end": 449,
+      "output_start": 240,
+      "keep_frames": 120,
+      "status": "complete",
+      "raw": "segment_02_raw.mp4",
+      "sha256": "88b101c12a5710cce463db3adaebc8affca0777f9dfcb465da50aeb1dbd284bd",
+      "wall_seconds": 1509.1957070990466,
+      "peak_cuda_allocated_bytes": 82576938496
+    }
+  ],
+  "output_sha256": "6eb8f98b4076f890b1e6eb496ce3b65b8eca55f16f57b9612360c3275d52a73c",
+  "joined_info": {
+    "width": 864,
+    "height": 480,
+    "fps": 24.0,
+    "frames": 360,
+    "first_pts": 0.0
+  }
+}
