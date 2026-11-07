@@ -322,11 +322,23 @@ IoU / F1 from the occlusion masks saved by `run_pipeline` on the ground-truth ma
 
 **Strong threshold and minimum area.** Raising the strong threshold requires more evidence to seed a region. Weak pixels can still be retained if connected to a surviving seed. Raising the minimum area removes small surviving components and can also discard genuine small occluders. In the width-640 common validation ablation, raising strong from 0.25 to 0.375 or minimum area from 38 to 228 processing pixels left mean IoU at 0.8971 and leakage at 1.36% on all three masks. These changes did not alter the measured result for this validation subset. [Validation ablations](student_files/notebook3/validation_ablations.json)
 
+![Common validation frame 192 mask ablations, independent, width 640](student_files/notebook3/validation_occlusion_ablations.png)
+
+*Common clip, validation frame 192, independent localisation, width 640. Ground truth and predicted masks illustrate the frozen configuration, higher strong threshold, larger minimum area, disabled hysteresis and disabled opening. Each ablation changes its named factor.* [AI-LANGUAGE]
+
 **Shadows, highlights and stationary occluders.** A local cast shadow darkens a patch of the board that remains visible. The global gain and offset can leave a strong residual in that patch, so the mask can mistake the shadow for foreground. A specular highlight can also create a strong local residual as the viewing angle changes. If the region survives opening and the minimum-area filter, the composite can leave a patch of the original poster visible. A stationary occluder can still be detected because the current frame is compared with the warped, unoccluded reference. Its detectability depends on its appearance relative to the board and on whether the residual survives mask cleaning. A stationary object that closely matches the underlying colour and texture can therefore go undetected. These cases follow from the residual model. [AI-LANGUAGE]
 
 **Hysteresis and opening.** On those same three common validation masks, setting weak equal to strong drops mean IoU to 0.6778 and increases leakage to 19.85%. Weak but connected foreground pixels therefore matter to the composite. With opening enabled, mean IoU rises from 0.8863 to 0.8971 while leakage rises slightly from 1.34% to 1.36%. In a controlled residual-map diagnostic, a 120-pixel-long horizontal strip has residual 0.20 with a 5-pixel-long seed of residual 0.50. Using the Notebook 3 processing settings, widths 1–4 px are removed by the radius-2 disk and width 5 px is the thinnest tested strip that survives (588 of 600 pixels). With radius 0, even the 1-pixel strip survives because its area exceeds 38 pixels. This is a measurement for a straight synthetic strip, where length and orientation are controlled.
 
-**False occlusion under viewpoint change.** In the width-640 independent diagnostic on `coke_perspective`, frame 224 uses the estimated frozen homography and has an empty foreground audit mask. The predicted mask still covers 4.5% of the board. Frame 288 has 2.7% false occlusion even with the explicitly labelled GT-fallback homography. The latter is diagnostic evidence only. A homography aligns the plane, but perspective changes the sampling of high-contrast edges and may change local appearance. One global gain and offset cannot account for spatially varying residuals. Strong residuals can therefore seed connected false regions in the weak mask. The evidence identifies the residual mechanism, while the images alone do not separate resampling, blur and illumination effects. [Frame 224 residual and mask](student_files/notebook3/viewpoint_false_occlusion_000224.png) · [Frame 288 GT-fallback diagnostic](student_files/notebook3/viewpoint_false_occlusion_000288.png) [AI-LANGUAGE]
+**False occlusion under viewpoint change.** In the width-640 independent diagnostic on `coke_perspective`, frame 224 uses the estimated frozen homography and has an empty foreground audit mask. The predicted mask still covers 4.5% of the board. Frame 288 has 2.7% false occlusion even with the explicitly labelled GT-fallback homography. The latter is diagnostic evidence only. A homography aligns the plane, but perspective changes the sampling of high-contrast edges and may change local appearance. One global gain and offset cannot account for spatially varying residuals. Strong residuals can therefore seed connected false regions in the weak mask. The evidence identifies the residual mechanism, while the images alone do not separate resampling, blur and illumination effects. [AI-LANGUAGE]
+
+![Viewpoint test frame 224, independent, width 640, estimated homography](student_files/notebook3/viewpoint_false_occlusion_000224.png)
+
+*Viewpoint clip (`coke_perspective`), test frame 224, independent localisation, width 640, frozen settings. The panels show the observed frame, warped reference, compensated residual with mask boundary, and false foreground. The empty audit mask confirms that the predicted foreground is false occlusion.* [AI-LANGUAGE]
+
+![Viewpoint test frame 288, independent diagnostic, width 640, GT-fallback](student_files/notebook3/viewpoint_false_occlusion_000288.png)
+
+*Viewpoint clip (`coke_perspective`), test frame 288, width 640. This labelled GT-fallback diagnostic uses the audit homography to isolate residual and mask behaviour. It is evaluation-only evidence and contributes no predictions to the submitted pipeline videos or stress tables.* [AI-LANGUAGE]
 
 ## Stage 4 — Your clip
 ### Capture and audit
@@ -335,7 +347,24 @@ IoU / F1 from the occlusion masks saved by `run_pipeline` on the ground-truth ma
 Hoang Bach filmed `poster_03` handheld on an iPhone 13. Before annotation, the 16.57 s recording was sped up uniformly to 15.00 s and prepared as a silent landscape clip at 1280 × 720 and 30 fps. The rectified breadfruit poster occupies 19.02% of frame 0. The clip includes a pan, changes in distance and viewpoint, camera roll and a black zippered case crossing the board. Passersby appear incidentally in the background and their faces are not identifiable. The camera operator confirms consent was obtained for people shown. The preparation removed source metadata and audio, and the MP4 retains technical container tags. Hoang Bach manually labelled 10 corner frames and five masks, three with foreground and two empty. The shared comparison uses clean frame 0, occluded frame 45, strong-perspective frame 240 and adjacent frames 390–391. [Capture manifest](manifests/capture_manifest.csv) · [Corner audit](manifests/audit_corners.csv) · [Mask audit](manifests/audit_masks.csv) [HUMAN-DATA] [AI-LANGUAGE]
 ### Overlay Scorecard
 <!-- outputs/scorecards/<clip_id>_scorecard.md for both variants; one representative frame + one failure frame -->
-The [poster_03 Overlay Scorecard](outputs/scorecards/poster_03_scorecard.md) covers both classical variants on the full-resolution personal audit. Frame 240 illustrates an overlay that follows the tilted board. Flow-assisted frame 195 is the placement failure at the frozen threshold despite the monitor reporting OK. [Audit examples](student_files/personal_preparation/poster_03/scorecard_audit_examples.png) [AI-LANGUAGE]
+The following Overlay Scorecard covers both classical variants on the full-resolution `poster_03` audit. The standalone copy is saved in [poster_03_scorecard.md](outputs/scorecards/poster_03_scorecard.md). [AI-LANGUAGE]
+
+| Field | Personal clip audit |
+|---|---|
+| Clip | poster_03, full resolution 1280 x 720, 30 fps, 450 frames (15.0 s). The breadfruit poster occupies 19.02% of frame 0. Handheld pan, distance and viewpoint changes, and camera roll. Audit frames 45, 195 and 449 contain the black case crossing the board. These indices are sampled events. Physical board dimensions were unmeasured. |
+| Initialisation | Frame 0, both variants: 1,000 described keypoints in the rectified reference and 1,000 in the frame, 268 matches, 221 inliers (82.46%), median residual 0.85 px. Frame-0 diagnostics were reproduced using the frozen settings. |
+| Geometry | On 10 corner audit frames, independent has median error 0.53% and 10/10 successes. Flow-assisted has median error 0.60% and 9/10 successes. Both detect 10/10. Flow-assisted frame 195 reaches 2.45%, above the frozen 2% success threshold. |
+| Temporal | Part I recovered-corner jitter across 9 adjacent pairs is 2.23 px (independent) and 3.83 px (flow-assisted). Tracking drift, defined on audit frames at least 16 frames after localisation, is 0.67% (8 frames) for flow-assisted and n/a (0 eligible frames) for independent. No monitor HIDE episode occurred, so recovery after re-entry is unmeasured. |
+| Occlusion | On three nonempty audit masks, mean mask IoU/F1 is 0.834/0.908 (independent) and 0.790/0.877 (flow-assisted). Video leakage is 7.95% / 8.04% over those three frames. Visible-board coverage is 95.56% / 95.01% over five mask frames, including two empty masks. A same-pose alpha diagnostic compares empty predicted masks against the saved predictions before encoding: leakage falls from 95.61% to 5.90% (independent) and from 95.34% to 6.03% (flow-assisted). Audit foreground is used only to score this diagnostic. |
+| Monitor | Over 450 frames, independent has 449 OK and one REINIT at frame 103 (inlier_ratio). Flow-assisted has 450 OK. Both have zero HIDE. The flow-assisted placement failure at frame 195 occurs despite the OK flag. |
+| Description | At representative frame 240 the artwork follows the tilted board, with corner error 0.41% (independent) and 0.47% (flow-assisted). At frame 195 the case crosses the board and the flow-assisted corner error rises to 2.45% versus 1.57% for independent. At clean frame 0 both variants predict a spurious occlusion mask of 3,015 pixels, leaving patches of the original poster. |
+| Uncertainty | Human audit comprises 10 corner frames and five masks (three nonempty, two empty). Corner labels behind occlusion have estimation uncertainty. Frozen thresholds came from common-clip validation. Metrics describe sampled frames and the diagnostic holds saved poses fixed. [AI-LANGUAGE] |
+
+![Personal clip audit examples for both classical variants at frames 240 and 195](student_files/personal_preparation/poster_03/scorecard_audit_examples.png)
+
+*`poster_03`, full resolution, both classical variants. The top row shows representative audit frame 240. The bottom row shows occluded audit frame 195, where flow-assisted placement exceeds the frozen 2% threshold despite an OK monitor flag. Column titles report corner error from the latest evaluator reports.* [AI-LANGUAGE]
+
+
 ### Generative comparison
 <!-- the open-weight video model you chose (direct pixel generation; inference scripts permitted), its settings, the video you gave it (whole clip, a cut, or joined segments), and why (cite the model); the seed, the log, the overlaylab.evaluate --frames report, comparison table against the classical output on the same frames, [AI-GENERATION] markers -->
 
@@ -349,7 +378,13 @@ All methods were evaluated with `overlaylab.evaluate --frames` on the same five 
 | Classical flow-assisted | 0.79% | 4/4 | 0.781 | 0.0476 | 0.0455 | 34.3 dB | 5.5% | 95.9% | n/a |
 | MiniMax-H3 [AI-GENERATION] | 2.64% | 2/4 | 0.367 | 0.0503 | 0.0436 | 15.2 dB | 7.4% | 96.1% | 4,766.922 s on A100 80 GB |
 
-[Saved evaluation reports](outputs/evaluation/stage4_genai_reports.json) · [Five-frame visual comparison](student_files/personal_preparation/poster_03/stage4_comparison_review.jpg) [AI-GENERATION]
+[Saved evaluation reports](outputs/evaluation/stage4_genai_reports.json)
+
+![Personal clip comparison of source, classical independent, classical flow-assisted and MiniMax on five audit frames](student_files/personal_preparation/poster_03/stage4_comparison_review.jpg)
+
+*`poster_03`, selected audit frames 0, 45, 240, 390 and 391 from top to bottom. Columns show the source, classical independent, classical flow-assisted and MiniMax-H3. Generative images were extracted at the corresponding source timestamps. Frame 45 supplies the nonempty mask for comparison leakage, and frames 390–391 supply the temporal pair. The MiniMax column contains generated pixels.* [AI-GENERATION] [AI-LANGUAGE]
+
+
 ### Question 5 — Reflection
 <!-- classical vs your generative model on your clip: geometric placement, artwork identity, occlusion order, background preservation (what the background PSNR says about generated vs composited pixels); controllability, cost; what the model generated outside the board and in front of it; whether it kept the clip's timing (compare with the staff MiniMax-H3 example in data/genai_oracle/) -->
 
