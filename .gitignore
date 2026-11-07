@@ -16,3 +16,7 @@ data/common_clip/frames/
 .vscode/
 .idea/
 code/outputs/videos/*.mp4
+
+# Submission zip (make_submission.py)
+/*.zip
+/*.zip.part

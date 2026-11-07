@@ -12,8 +12,6 @@ Conventions: grayscale images are float32 in [0, 1]; ``x`` indexes columns and
 """
 from __future__ import annotations
 
-from asyncio import constants
-import re
 from typing import Tuple
 
 import cv2
