@@ -303,6 +303,15 @@ def check_student_data(r: Report, clip: str, artwork: str):
 def _excluded(rel: Path) -> bool:
     if any(part in EXCLUDE_DIRS for part in rel.parts):
         return True
+    # Retired experiment files and diagnostic previews stay outside the submission.
+    if any("vace" in part.lower() or "before_" in part.lower() for part in rel.parts):
+        return True
+    if rel.parts[:2] == ("outputs", "annotation_check"):
+        return True
+    if rel.parts[:3] == ("student_files", "personal_preparation", "poster_03") and rel.name in {
+        "README.md", "STAGE4_SETUP.md"
+    }:
+        return True
     return any(fnmatch.fnmatch(rel.name, pat) for pat in EXCLUDE_FILES)
 
 
@@ -316,7 +325,7 @@ def collect(clip: str, artwork: str, other_clips: list[str]) -> list[tuple[Path,
         if _excluded(rel):
             continue
         # Evaluator reports / videos of personal clips that are not submitted.
-        if rel.parts[0] == "outputs" and any(rel.name.startswith(f"{o}_") for o in other_clips):
+        if any(part == o or part.startswith(f"{o}_") for o in other_clips for part in rel.parts):
             skipped_stale.append(str(rel))
             continue
         files.append((p, f"code/{rel.as_posix()}"))

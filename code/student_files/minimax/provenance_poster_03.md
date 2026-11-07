@@ -8,7 +8,7 @@ Prompt
 
 > Replace the advertisement on the board in <Video 1> with the attached artwork <Picture 1>.
 
-The runner decoded consecutive ranges from the prepared 450-frame clip at 30 fps and passed those frame sequences and the artwork to Ref2VA. The Notebook 4 interval export and board masks were prepared for the earlier mask-conditioned workflow. MiniMax Ref2VA took its video reference directly from the prepared source clip and its picture reference directly from `ad4.png`. [Source clip](../../../data/personal/poster_03/clip.mp4) · [Artwork](../../../data/artwork/ad4.png)
+The runner decoded consecutive ranges from the prepared 450-frame clip at 30 fps and passed those frame sequences and the artwork to Ref2VA. MiniMax Ref2VA took its video reference directly from the prepared source clip and its picture reference directly from `ad4.png`. [Source clip](../../../data/personal/poster_03/clip.mp4) · [Artwork](../../../data/artwork/ad4.png)
 
 | Source frames | Output frames kept | Raw file | Measured segment time |
 |---|---|---|---:|
@@ -18,8 +18,10 @@ The runner decoded consecutive ranges from the prepared 450-frame clip at 30 fps
 
 Each raw file retains all 124 generated frames. The joined file contains the first 120 frames from each segment in source order. The mapping from source audit index to joined index is 0→0, 45→36, 240→192, 390→312 and 391→313. The last pair lies in segment 3. The output hashes and durations identify these files as the artifacts from the logged job. The saved MiniMax evidence shows one completed invocation per segment and records no technical retry for that job. [Joined output](../../outputs/genai/output.mp4) · [Shared audit reports](../../outputs/evaluation/stage4_genai_reports.json)
 
-## Earlier VACE run and submission status
+## Submission artifacts
 
-The earlier Wan2.1-VACE-14B experiment was a separate model run. An initial Slurm submission failed at the nested `srun` launch after preflight, before inference. A subsequent VACE submission completed three segments. The MiniMax files and figures document job 1083102 only. The official choice of output remains subject to TA confirmation under the one-model, one-attempt protocol. Confirm artwork eligibility with the TA if the small marks visible at the bottom of `ad4.png` count as logos under the lab rule.
+The submitted generative result is the MiniMax-H3 output from job 1083102, with its three raw segments, audit extracts, run manifest and Slurm log. The camera operator reports that the TA approved `ad4.png` for this submission.
 
-[AI-LANGUAGE] Assembled from the saved MiniMax artifacts and the recorded VACE run history.
+The packaged runner imports its file, timing and concatenation helpers from `video_utils.py` in this directory. These helper functions were relocated after generation. The `code_sha256` in `attempt.json` records the runner used for job 1083102 before this import change.
+
+[AI-LANGUAGE] Assembled from the saved MiniMax artifacts and the student's confirmation.

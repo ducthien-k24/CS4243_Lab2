@@ -5,14 +5,10 @@ import importlib.metadata
 import json
 import os
 from pathlib import Path
-import sys
 import time
 
 CODE = Path(__file__).resolve().parents[2]
-sys.path.insert(0, str(CODE / "student_files" / "vace"))
-from infer import digest, probe, save_json
-from segment_timing import audit_mapping
-from segmented_infer import join_segments
+from video_utils import audit_mapping, digest, join_segments, probe, save_json
 
 MODEL = "MiniMaxAI/MiniMax-H3"
 PROMPT = "Replace the advertisement on the board in <Video 1> with the attached artwork <Picture 1>."
