@@ -160,6 +160,7 @@ def transfer_points(H: np.ndarray, pts: np.ndarray) -> np.ndarray:
 def symmetric_transfer_error(H: np.ndarray, src: np.ndarray, dst: np.ndarray) -> np.ndarray:
     """Per-correspondence e_i = |x' - pi(H x)|^2 + |x - pi(H^-1 x')|^2."""
     # YOUR CODE HERE
+    # [AI-CODE] AI completed the remainder after the student wrote the opening part.
     src = np.asarray(src, dtype=np.float64).reshape(-1, 2)
     dst = np.asarray(dst, dtype=np.float64).reshape(-1, 2)
     try:
@@ -262,6 +263,7 @@ def warp_artwork(artwork: np.ndarray, H: np.ndarray, frame_shape: Tuple[int, ...
     coverage and are zero in ``warped``.
     """
     # YOUR CODE HERE
+    # [AI-CODE] AI completed the remainder after the student wrote the opening part.
     art = np.asarray(artwork, dtype=np.float32)
     H = np.asarray(H, dtype=np.float64)
     Hf, Wf = int(frame_shape[0]), int(frame_shape[1])

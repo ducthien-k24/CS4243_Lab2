@@ -38,6 +38,7 @@ def localise_board(reference: np.ndarray, frame: np.ndarray, config: Localisatio
     is False.
     """
     # YOUR CODE HERE
+    # [AI-CODE] AI completed the remainder after the student wrote the opening part.
     g_ref = to_gray(reference)
     g_frm = to_gray(frame)
 
@@ -95,6 +96,7 @@ def artwork_to_frame(artwork: np.ndarray, H: np.ndarray, config: LocalisationCon
     the two transformations compose.
     """
     # YOUR CODE HERE
+    # [AI-CODE] AI completed the remainder after the student wrote the opening part.
     ah, aw = artwork.shape[:2]
     ref_shape = config.warp.reference_shape
     rh, rw = (ref_shape[0], ref_shape[1]) if ref_shape is not None else (ah, aw)
@@ -148,6 +150,7 @@ def evaluate_audit_frames(reference: np.ndarray, frames: Dict[int, np.ndarray],
     from ``metrics.summarise_errors`` using ``config.success_threshold``.
     """
     # YOUR CODE HERE
+    # [AI-CODE] AI completed the remainder after the student wrote the opening part.
     per_frame, errors = {}, []
     for f in sorted(gt_corners):
         gt = np.asarray(gt_corners[f], dtype=np.float64)

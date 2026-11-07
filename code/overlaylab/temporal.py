@@ -323,6 +323,7 @@ def failure_monitor(stats: Sequence[Dict], config: MonitorConfig) -> List[Tuple[
     4. otherwise OK with trigger "none"; an OK frame resets the run.
     """
     # YOUR CODE HERE
+    # [AI-CODE] AI completed the remainder after the student wrote the opening part.
     def _fires(value, limit, below=False):
         """So sánh an toàn: NaN / None không bao giờ kích hoạt."""
         if value is None:
