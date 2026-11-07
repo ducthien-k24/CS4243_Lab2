@@ -2,7 +2,7 @@
 
 ## MiniMax experiment [AI-GENERATION]
 
-Job 1083102 ran on 5 November 2026 on one NVIDIA A100 80 GB PCIe. MiniMax-H3 Ref2VA used checkpoint revision `42ed227ee7df40d41602854ae760620d6eb651fe`, seed 2026 for each segment, 30 steps, an 864 × 480 canvas at 24 fps, bfloat16, ComponentsManager auto CPU offload and reference image short edge 768 px. The exact runtime versions and hashes are in the run manifest. [Attempt manifest](../../outputs/genai/attempt.json) · [Segment log](../../manifests/genai_log.csv) · [Slurm console](../../../h3-poster03-1083102.log) · [Inference script](run_ref2va.py)
+Job 1083102 ran on 5 November 2026 on one NVIDIA A100 80 GB PCIe. MiniMax-H3 Ref2VA used checkpoint revision `42ed227ee7df40d41602854ae760620d6eb651fe`, seed 2026 for each segment, 30 steps, an 864 × 480 canvas at 24 fps, bfloat16, ComponentsManager auto CPU offload and reference image short edge 768 px. The exact runtime versions and hashes are in the run manifest. [Attempt manifest](../../outputs/genai/attempt.json) · [Segment log](../../manifests/genai_log.csv) · [Slurm console](h3-poster03-1083102.log) · [Inference script](run_ref2va.py)
 
 Prompt
 
