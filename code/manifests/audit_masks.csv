@@ -1,14 +1,4 @@
 clip_id,frame,frame_path,mask_path,annotator,occluder,annotated_before_inference
-poster_01,0,../../data/personal/poster_01/frames/frame_000000.png,../../data/personal/poster_01/masks/mask_000000.png,Hoang Bach,none,yes
-poster_01,30,../../data/personal/poster_01/frames/frame_000030.png,../../data/personal/poster_01/masks/mask_000030.png,Hoang Bach,light turquoise plastic folder,yes
-poster_01,45,../../data/personal/poster_01/frames/frame_000045.png,../../data/personal/poster_01/masks/mask_000045.png,Hoang Bach,light turquoise plastic folder,yes
-poster_01,145,../../data/personal/poster_01/frames/frame_000145.png,../../data/personal/poster_01/masks/mask_000145.png,Hoang Bach,light turquoise plastic folder,yes
-poster_01,398,../../data/personal/poster_01/frames/frame_000398.png,../../data/personal/poster_01/masks/mask_000398.png,Hoang Bach,none,yes
-poster_02,0,../../data/personal/poster_02/frames/frame_000000.png,../../data/personal/poster_02/masks/mask_000000.png,Hoang Bach,none,yes
-poster_02,45,../../data/personal/poster_02/frames/frame_000045.png,../../data/personal/poster_02/masks/mask_000045.png,Hoang Bach,black rectangular zippered case (visual description; exact object type unconfirmed),yes
-poster_02,120,../../data/personal/poster_02/frames/frame_000120.png,../../data/personal/poster_02/masks/mask_000120.png,Hoang Bach,black rectangular zippered case (visual description; exact object type unconfirmed),yes
-poster_02,225,../../data/personal/poster_02/frames/frame_000225.png,../../data/personal/poster_02/masks/mask_000225.png,Hoang Bach,black rectangular zippered case (visual description; exact object type unconfirmed),yes
-poster_02,265,../../data/personal/poster_02/frames/frame_000265.png,../../data/personal/poster_02/masks/mask_000265.png,Hoang Bach,none,yes
 poster_03,0,../../data/personal/poster_03/frames/frame_000000.png,../../data/personal/poster_03/masks/mask_000000.png,Hoang Bach,none,yes
 poster_03,45,../../data/personal/poster_03/frames/frame_000045.png,../../data/personal/poster_03/masks/mask_000045.png,Hoang Bach,black rectangular zippered case (visual description; exact object type unconfirmed),yes
 poster_03,195,../../data/personal/poster_03/frames/frame_000195.png,../../data/personal/poster_03/masks/mask_000195.png,Hoang Bach,black rectangular zippered case (visual description; exact object type unconfirmed),yes
