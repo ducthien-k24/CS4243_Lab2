@@ -432,3 +432,7 @@ All methods were evaluated with `overlaylab.evaluate --frames` on the same five 
 | Codex | `student_files/personal_preparation/poster_03/make_scorecard_diagnostics.py`, intermediate-evidence figure, monitor timeline and diagnostics JSON | [AI-CODE] [AI-LANGUAGE] | Rendered saved predicted corners, masks and monitor statistics against the human audit | Checked frame-0 false-mask area, frame-195 mask overlap and corner errors directly against saved runs and audit labels |
 | MiniMax-H3 Ref2VA | Stage 4 output, raw segments and audit extracts | [AI-GENERATION] | Generated replacement video from source ranges and artwork reference | Run manifest and file hashes, shared-frame evaluation and visual comparison |
 | Codex | Stage 4 capture summary, comparison, Q5 and provenance appendix; MiniMax runner imports and video_utils.py; make_submission.py filters | [AI-LANGUAGE] [AI-CODE] | Drafted report, relocated the existing video helpers and updated submission file selection | Compared against saved results; helper functions checked for AST equivalence; timestamp mapping, isolated runner import and packaging exclusions verified |
+
+## Student information
+- A0343164J - Tran Duc Thien
+- A0360382H - Nguyen Phan Hoang Bach
