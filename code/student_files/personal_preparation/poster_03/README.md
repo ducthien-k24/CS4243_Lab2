@@ -21,8 +21,7 @@ rather than use 1.2x and produce about 13.8 seconds. [AI-CODE]
   byte-identical to poster_02's rectification. No video audit corners were used.
 - Artwork: retain `data/artwork/ad4.png`, **1200x1692**, matching the board's
   ratio exactly; orange side padding remains. No artwork change is necessary.
-- Existing poster_01/poster_02 videos, annotations and outputs are preserved.
-  Their annotations must not be reused for poster_03.
+- Annotations from earlier captures are not reused for poster_03.
 
 `verification.json` records a complete output decode, frame counts, CFR
 timestamps, first/last comparison with source, metadata and artwork checks.

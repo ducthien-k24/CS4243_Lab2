@@ -35,7 +35,7 @@ def main():
     parser = argparse.ArgumentParser(description=__doc__)
     parser.add_argument("--video", type=Path, default=CODE.parent / "data/video/video.mp4")
     parser.add_argument("--photo", type=Path, default=CODE.parent / "data/video/reference.jpg")
-    parser.add_argument("--clip-id", default="poster_01")
+    parser.add_argument("--clip-id", default="poster_03")
     parser.add_argument("--start", type=float, default=0.3)
     parser.add_argument("--end", type=float, default=15.3)
     parser.add_argument("--target-duration", type=float,

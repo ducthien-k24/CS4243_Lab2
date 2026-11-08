@@ -301,41 +301,33 @@ def check_student_data(r: Report, clip: str, artwork: str):
 # --------------------------------------------------------------------------- packing
 
 def _excluded(rel: Path) -> bool:
+    # Only what START_HERE.txt says to leave out: caches, OS/editor files, model weights, preview WEBMs.
     if any(part in EXCLUDE_DIRS for part in rel.parts):
         return True
-    # Retired experiment files and diagnostic previews stay outside the submission.
-    if any("vace" in part.lower() or "before_" in part.lower() for part in rel.parts):
+    # Unused VACE attempt (never ran; Stage 4 uses MiniMax-H3, student_files/minimax/).
+    if rel.parts[:2] == ("student_files", "vace"):
         return True
-    if rel.parts[:2] == ("outputs", "annotation_check"):
-        return True
-    if rel.parts[:3] == ("student_files", "personal_preparation", "poster_03") and rel.name in {
-        "README.md", "STAGE4_SETUP.md"
-    }:
-        return True
+    # Setup notes and superseded conditions written for that VACE plan.
+    if rel.parts[:2] == ("student_files", "personal_preparation"):
+        if rel.name.startswith("genai_conditions_before_"):
+            return True
+        if rel.parts[2:3] == ("poster_03",) and rel.name in {"README.md", "STAGE4_SETUP.md"}:
+            return True
+        if rel.name == "STAGE4_SETUP.md":
+            return True
     return any(fnmatch.fnmatch(rel.name, pat) for pat in EXCLUDE_FILES)
 
 
-def collect(clip: str, artwork: str, other_clips: list[str]) -> list[tuple[Path, str]]:
+def collect(clip: str, artwork: str) -> list[tuple[Path, str]]:
+    """code/ as a whole folder; data/ only data/personal/<clip>/ and data/artwork/<artwork>."""
     files: list[tuple[Path, str]] = []
-    skipped_stale: list[str] = []
     for p in sorted(CODE.rglob("*")):
-        if not p.is_file():
-            continue
-        rel = p.relative_to(CODE)
-        if _excluded(rel):
-            continue
-        # Evaluator reports / videos of personal clips that are not submitted.
-        if any(part == o or part.startswith(f"{o}_") for o in other_clips for part in rel.parts):
-            skipped_stale.append(str(rel))
-            continue
-        files.append((p, f"code/{rel.as_posix()}"))
-    for base in [DATA / "personal" / clip]:
-        for p in sorted(base.rglob("*")):
-            if p.is_file() and not _excluded(p.relative_to(DATA)):
-                files.append((p, f"data/{p.relative_to(DATA).as_posix()}"))
+        if p.is_file() and not _excluded(p.relative_to(CODE)):
+            files.append((p, f"code/{p.relative_to(CODE).as_posix()}"))
+    for p in sorted((DATA / "personal" / clip).rglob("*")):
+        if p.is_file() and not _excluded(p.relative_to(DATA)):
+            files.append((p, f"data/{p.relative_to(DATA).as_posix()}"))
     files.append((DATA / "artwork" / artwork, f"data/artwork/{artwork}"))
-    if skipped_stale:
-        print(f"  [INFO] left out outputs of personal clips that are not submitted: {skipped_stale}")
     return files
 
 
@@ -395,8 +387,7 @@ def main(argv=None):
         return 1
 
     section("Packing")
-    others = [p.name for p in (DATA / "personal").iterdir() if p.is_dir() and p.name != args.clip]
-    files = collect(args.clip, args.artwork, others)
+    files = collect(args.clip, args.artwork)
     out = Path(args.out).resolve()
     write_zip(files, out)
     print(f"  wrote {out} ({out.stat().st_size / 2**20:.0f} MB, {len(files)} files)")
