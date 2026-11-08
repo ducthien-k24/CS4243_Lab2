@@ -44,7 +44,7 @@
       },
       "joined_frames": 360
     },
-    "notes": "MiniMax-H3 submission result from the verified Slurm job 1083102. Ref2VA uses the source video and artwork as references. Keep all raw segments; the joined video keeps the first 120 of 124 frames from each segment in source order. The official submission attempt is subject to the lab protocol.",
+    "notes": "MiniMax-H3 submission result from the verified Slurm job 1083102. Ref2VA uses the source video and artwork as references. Keep all raw segments; the joined video keeps the first 120 of 124 frames from each segment in source order. This is the single submitted MiniMax-H3 attempt, comprising the three declared segments with fixed settings and seed.",
     "segments": [
       {
         "start": 0,

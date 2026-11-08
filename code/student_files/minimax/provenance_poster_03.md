@@ -20,7 +20,7 @@ Each raw file retains all 124 generated frames. The joined file contains the fir
 
 ## Submission artifacts
 
-The submitted generative result is the MiniMax-H3 output from job 1083102, with its three raw segments, audit extracts, run manifest and Slurm log. The camera operator reports that the TA approved `ad4.png` for this submission.
+The single submitted MiniMax-H3 attempt is job 1083102, comprising three fixed-setting segments, their raw outputs, audit extracts, run manifest and Slurm log. The camera operator reports that the TA approved `ad4.png` for this submission.
 
 The packaged runner imports its file, timing and concatenation helpers from `video_utils.py` in this directory. These helper functions were relocated after generation. The `code_sha256` in `attempt.json` records the runner used for job 1083102 before this import change.
 

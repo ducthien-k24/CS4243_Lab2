@@ -1,0 +1,71 @@
+{
+  "clip": "poster_03",
+  "resolution": [
+    1280,
+    720
+  ],
+  "frames": {
+    "0": {
+      "independent": {
+        "saved_corner_error": 0.002780937774867521,
+        "monitor_flag": [
+          "OK",
+          "none"
+        ],
+        "predicted_mask_pixels": 3015,
+        "gt_mask_pixels": 0,
+        "false_positive_pixels": 3015,
+        "missed_pixels": 0
+      },
+      "flow_assisted": {
+        "saved_corner_error": 0.002780937774867521,
+        "monitor_flag": [
+          "OK",
+          "none"
+        ],
+        "predicted_mask_pixels": 3015,
+        "gt_mask_pixels": 0,
+        "false_positive_pixels": 3015,
+        "missed_pixels": 0
+      }
+    },
+    "195": {
+      "independent": {
+        "saved_corner_error": 0.016066312737475545,
+        "monitor_flag": [
+          "OK",
+          "none"
+        ],
+        "predicted_mask_pixels": 42610,
+        "gt_mask_pixels": 52738,
+        "false_positive_pixels": 1870,
+        "missed_pixels": 11998,
+        "mask_iou": 0.7460445355991796
+      },
+      "flow_assisted": {
+        "saved_corner_error": 0.02460091124056455,
+        "monitor_flag": [
+          "OK",
+          "none"
+        ],
+        "predicted_mask_pixels": 52520,
+        "gt_mask_pixels": 52738,
+        "false_positive_pixels": 12212,
+        "missed_pixels": 12430,
+        "mask_iou": 0.6206004618937644
+      }
+    }
+  },
+  "flow_assisted_audit_errors_from_saved_corners": {
+    "0": 0.002780937774867521,
+    "45": 0.011121851171703475,
+    "75": 0.005580803537731295,
+    "150": 0.006413716203843934,
+    "195": 0.02460091124056455,
+    "240": 0.004810312701332407,
+    "300": 0.005641984583835264,
+    "390": 0.011371268324581121,
+    "420": 0.005702297860924139,
+    "449": 0.006918675550464378
+  }
+}
